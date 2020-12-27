@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'main.dart';
+import 'package:taxi_zilla_driver/loggedInPage.dart';
+import 'package:taxi_zilla_driver/userStatus.enum.dart';
 import 'userOperations.dart';
-import 'loggedInPage.dart';
+import 'main.dart';
 
 class orderConfirmed extends StatelessWidget {
   // This widget is the root of your application.
@@ -10,6 +11,7 @@ class orderConfirmed extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'taxiZilla Шофьор - ' + name,
       theme: ThemeData(
         primarySwatch: generateMaterialColor(Color.fromRGBO(255, 237, 0, 1)),
@@ -33,7 +35,32 @@ class orderConfirmed extends StatelessWidget {
               ],
             ),
           ),
-          body: Column()),
+          body: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                      height: 90,
+                      width: 200,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            side: BorderSide(color: Colors.green)),
+                        color: Colors.green,
+                        onPressed: () {
+                          status = userStatus.ONLINE;
+                          userFunctions().finishOrder();
+                          runApp(loggedInPage());
+                        },
+                        child: Text('Приключи поръчка',
+                            textAlign: TextAlign.center,
+                            style: new TextStyle(fontSize: 25)),
+                      )),
+                ],
+              )
+            ],
+          )),
     );
   }
 }

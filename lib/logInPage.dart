@@ -12,9 +12,10 @@ class loginPage extends StatelessWidget {
 
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'taxiZilla Шофьор',
       theme: ThemeData(
-        primarySwatch: generateMaterialColor(Color.fromRGBO(255, 237, 0, 1)),
+        primarySwatch: primary,
       ),
       home: Scaffold(
         appBar: AppBar(

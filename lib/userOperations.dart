@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:encrypt/encrypt.dart';
+import 'main.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'Session.dart';
@@ -20,16 +23,19 @@ class userFunctions {
     return json["fName"] + " " + json["lName"];
   }
 
-  Future<String> checkForOrders() async {
+  Future<String> checkForOrders(String x, String y, String status) async {
     final resp = await Session().post(
-        "https://taxizilla.cheapsoftbg.com/auth/changeStatus",
-        {'x': "25.679881", 'y': "43.132070", 'newStatus': "ONLINE"});
-    final resp2 = await Session()
-        .get("https://taxizilla.cheapsoftbg.com/order/getMyOrders");
-    if (resp2 == "")
+        "https://taxizilla.cheapsoftbg.com/auth/changeStatusAndCheckForOrders",
+        {'x': x, 'y': y, 'newStatus': status});
+    if (resp == "")
       return null;
     else
-      return resp2;
+      return resp;
+  }
+
+  void finishOrder() async {
+    await Session().post(
+        "https://taxizilla.cheapsoftbg.com/order/finishOrder", {'id': orderID});
   }
 
   Future<String> getAdresssByCoords(String x, String y) async {
@@ -42,10 +48,12 @@ class userFunctions {
   void acceptOrder() async {
     final resp = await Session()
         .post("https://taxizilla.cheapsoftbg.com/order/acceptOrder", {});
+    orderID = resp;
+    print(orderID);
   }
 
   void rejectOrder() async {
-    final resp = await Session()
+    await Session()
         .post("https://taxizilla.cheapsoftbg.com/order/rejectOrder", {});
   }
 

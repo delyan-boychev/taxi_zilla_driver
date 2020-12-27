@@ -1,5 +1,9 @@
+import 'package:taxi_zilla_driver/userOperations.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'main.dart';
 import 'package:http/http.dart' as http;
+
 class Session {
   Map<String, String> cookies = {};
 
@@ -7,7 +11,6 @@ class Session {
     String allSetCookie = response.headers['set-cookie'];
 
     if (allSetCookie != null) {
-
       var setCookies = allSetCookie.split(',');
 
       for (var setCookie in setCookies) {
@@ -30,10 +33,13 @@ class Session {
         var value = keyValue[1];
 
         // ignore keys that aren't cookies
-        if (key == 'path' || key == 'Path' || key == 'expires' || key == 'domain' || key == 'SameSite')
-          return;
+        if (key == 'path' ||
+            key == 'Path' ||
+            key == 'expires' ||
+            key == 'domain' ||
+            key == 'SameSite') return;
 
-        this.cookies[key] = value; 
+        this.cookies[key] = value;
       }
     }
   }
@@ -42,8 +48,7 @@ class Session {
     String cookie = "";
 
     for (var key in cookies.keys) {
-      if (cookie.length > 0)
-        cookie += ";";
+      if (cookie.length > 0) cookie += ";";
       cookie += key + "=" + cookies[key];
     }
 
@@ -52,13 +57,33 @@ class Session {
 
   Future<String> get(String url) async {
     http.Response response = await http.get(url, headers: headers);
-    _updateCookie(response);
-    return response.body;
+    if (response.statusCode == 401) {
+      headers = {};
+      final dir = await getExternalStorageDirectory();
+      userFunctions().logInTaxiDriver(
+          await File(dir.path + "/credentials").readAsString());
+      http.Response response = await http.get(url, headers: headers);
+      return response.body;
+    } else {
+      _updateCookie(response);
+      return response.body;
+    }
   }
 
   Future<String> post(String url, dynamic data) async {
     http.Response response = await http.post(url, body: data, headers: headers);
-    _updateCookie(response);
-    return response.body;
+    if (response.statusCode == 401) {
+      headers = {};
+      final dir = await getExternalStorageDirectory();
+      userFunctions().logInTaxiDriver(
+          await File(dir.path + "/credentials").readAsString());
+      http.Response response =
+          await http.post(url, body: data, headers: headers);
+      _updateCookie(response);
+      return response.body;
+    } else {
+      _updateCookie(response);
+      return response.body;
+    }
   }
 }
