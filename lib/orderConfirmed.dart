@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taxi_zilla_driver/loggedInPage.dart';
-import 'package:taxi_zilla_driver/userStatus.enum.dart';
 import 'userOperations.dart';
 import 'main.dart';
 
@@ -49,7 +48,7 @@ class orderConfirmed extends StatelessWidget {
                             side: BorderSide(color: Colors.green)),
                         color: Colors.green,
                         onPressed: () {
-                          status = userStatus.ONLINE;
+                          status = "ONLINE";
                           userFunctions().finishOrder();
                           runApp(loggedInPage());
                         },

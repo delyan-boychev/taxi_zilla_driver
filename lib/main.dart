@@ -5,14 +5,13 @@ import 'userOperations.dart';
 import 'logInPage.dart';
 import 'dart:io';
 import 'loggedInPage.dart';
-import 'userStatus.enum.dart';
 
 var name;
 var order;
 var orderID;
 var email;
 var address;
-var status = userStatus.ONLINE;
+var status = "ONLINE";
 MaterialColor primary = generateMaterialColor(Color.fromRGBO(255, 237, 0, 1));
 Color primaryColor = Color.fromRGBO(255, 237, 0, 1);
 MaterialColor generateMaterialColor(Color color) {

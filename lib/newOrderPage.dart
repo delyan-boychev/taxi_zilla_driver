@@ -3,7 +3,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:taxi_zilla_driver/userStatus.enum.dart';
 import 'main.dart';
 import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
@@ -98,7 +97,7 @@ class _newOrderState extends State<newOrderPage> {
                                 side: BorderSide(color: Colors.green)),
                             color: Colors.green,
                             onPressed: () {
-                              status = userStatus.BUSY;
+                              status = "BUSY";
                               userFunctions().acceptOrder();
                               a = -1;
                               runApp(orderConfirmed());
@@ -115,7 +114,7 @@ class _newOrderState extends State<newOrderPage> {
                                 side: BorderSide(color: Colors.red)),
                             color: Colors.red,
                             onPressed: () {
-                              status = userStatus.ONLINE;
+                              status = "ONLINE";
                               userFunctions().rejectOrder();
                               a = -1;
                               runApp(loggedInPage());

@@ -6,7 +6,6 @@ import 'dart:async';
 import 'userOperations.dart';
 import 'newOrderPage.dart';
 import 'package:location/location.dart';
-import 'userStatus.enum.dart';
 
 checkForOrders() async {
   Timer.periodic(Duration(seconds: 4), (timer) async {
@@ -23,12 +22,12 @@ checkForOrders() async {
           status.toString());
       if (o != null) {
         if (o.contains("address") && o.contains("x")) {
-          if (status == userStatus.BUSY) {
+          if (status == "BUSY") {
             userFunctions().rejectOrder();
           } else {
             timer.cancel();
             order = jsonDecode(o);
-            status = userStatus.BUSY;
+            status = "BUSY";
             await userFunctions().checkForOrders(locData.longitude.toString(),
                 locData.latitude.toString(), status.toString());
             if (order["address"] != "")
@@ -92,14 +91,14 @@ class _loggedInState extends State<loggedInPage> {
                       side: BorderSide(color: Colors.black, width: 5)),
                   color: statusButtonColor,
                   onPressed: () {
-                    if (status == userStatus.ONLINE) {
-                      status = userStatus.BUSY;
+                    if (status == "ONLINE") {
+                      status = "BUSY";
                       setState(() {
                         statusButtonColor = Colors.red;
                         statusButttonText = "Зает";
                       });
                     } else {
-                      status = userStatus.ONLINE;
+                      status = "ONLINE";
                       setState(() {
                         statusButtonColor = Colors.green;
                         statusButttonText = "На линия";
