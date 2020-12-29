@@ -8,7 +8,8 @@ import 'newOrderPage.dart';
 import 'package:location/location.dart';
 
 checkForOrders() async {
-  Timer.periodic(Duration(seconds: 4), (timer) async {
+  while (true) {
+    await Future.delayed(const Duration(seconds: 3), () => "3");
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     Location location = new Location();
     bool _serviceEnabled = await location.serviceEnabled();
@@ -25,7 +26,6 @@ checkForOrders() async {
           if (status == "BUSY") {
             userFunctions().rejectOrder();
           } else {
-            timer.cancel();
             order = jsonDecode(o);
             status = "BUSY";
             await userFunctions().checkForOrders(locData.longitude.toString(),
@@ -36,11 +36,12 @@ checkForOrders() async {
               address = await userFunctions()
                   .getAdresssByCoords(order["x"], order["y"]);
             runApp(newOrderPage());
+            break;
           }
         }
       }
     }
-  });
+  }
 }
 
 class loggedInPage extends StatefulWidget {
