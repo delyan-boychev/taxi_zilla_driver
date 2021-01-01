@@ -1,16 +1,15 @@
-# taxi_zilla_driver
+<p align="center"><img src="https://prikachi.net/images/7fdyq.png" />
+</p>
 
-A new Flutter project.
+## Описание
+taxiZilla е платформа, предназначена да свързва крайния потребител с таксиметровите шофьори. Чрез нея може да се прави поръчка на такси до адрес и точно местоположение.
 
-## Getting Started
+## Технологии:
+Използвани технологии: NestJS, MariaDB, Node.js, TypeORM, Passport, HTML, CSS, JavaScript, Bootstrap
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## План за реализация:
+1. Избиране на подходящи технологии за реализация
+2. Проучване на избраните технологии
+3. Реализация на Back End и Front End
+4. Поправяне на грешки
+5. Създаване на мобилно приложение за шофьори
