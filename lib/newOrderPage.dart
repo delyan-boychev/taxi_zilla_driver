@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'main.dart';
 import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
-import 'userOperations.dart';
+import 'userFunctions.dart';
 import 'loggedInPage.dart';
 import 'orderConfirmed.dart';
 

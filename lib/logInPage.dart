@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'main.dart';
-import 'userOperations.dart';
+import 'userFunctions.dart';
 import 'loggedInPage.dart';
 
 class loginPage extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:taxi_zilla_driver/userOperations.dart';
+import 'package:taxi_zilla_driver/userFunctions.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'main.dart';
@@ -57,7 +57,7 @@ class Session {
 
   Future<String> get(String url) async {
     http.Response response = await http.get(url, headers: headers);
-    if (response.statusCode == 401) {
+    if (response.body == "401") {
       headers = {};
       final dir = await getExternalStorageDirectory();
       userFunctions().logInTaxiDriver(
@@ -72,7 +72,7 @@ class Session {
 
   Future<String> post(String url, dynamic data) async {
     http.Response response = await http.post(url, body: data, headers: headers);
-    if (response.statusCode == 401) {
+    if (response.body == "401") {
       headers = {};
       final dir = await getExternalStorageDirectory();
       userFunctions().logInTaxiDriver(

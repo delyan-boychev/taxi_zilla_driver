@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taxi_zilla_driver/loggedInPage.dart';
-import 'userOperations.dart';
+import 'userFunctions.dart';
 import 'main.dart';
 
 class orderConfirmed extends StatelessWidget {
@@ -53,6 +53,27 @@ class orderConfirmed extends StatelessWidget {
                           runApp(loggedInPage());
                         },
                         child: Text('Приключи поръчка',
+                            textAlign: TextAlign.center,
+                            style: new TextStyle(fontSize: 25)),
+                      )),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                      height: 90,
+                      width: 200,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            side: BorderSide(color: Colors.green)),
+                        color: Colors.red,
+                        onPressed: () {
+                          userFunctions().rejectOrderAfterAccept();
+                          runApp(loggedInPage());
+                        },
+                        child: Text('Откажи поръчка',
                             textAlign: TextAlign.center,
                             style: new TextStyle(fontSize: 25)),
                       )),
