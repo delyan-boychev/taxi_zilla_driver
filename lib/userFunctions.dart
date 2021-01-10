@@ -17,8 +17,10 @@ class userFunctions {
 
   void rejectOrderAfterAccept() async {
     final resp = await Session().post(
-        "https://taxizilla.cheapsoftbg.com/order/rejectOrderAfterAccept",
-        {'orderID': orderID.toString(), 'sender': order["sender"]});
+        "https://taxizilla.cheapsoftbg.com/order/rejectOrderAfterAccept", {
+      'orderID': orderID.toString(),
+      'senderID': order["sender"]["id"].toString()
+    });
   }
 
   Future<String> getNameTaxiDriver() async {

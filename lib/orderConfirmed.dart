@@ -70,6 +70,7 @@ class orderConfirmed extends StatelessWidget {
                             side: BorderSide(color: Colors.green)),
                         color: Colors.red,
                         onPressed: () {
+                          status = "BUSY";
                           userFunctions().rejectOrderAfterAccept();
                           runApp(loggedInPage());
                         },

@@ -57,6 +57,17 @@ class _loggedInState extends State<loggedInPage> {
   @override
   Widget build(BuildContext context) {
     checkForOrders();
+    if (status == "ONLINE") {
+      setState(() {
+        statusButtonColor = Colors.green;
+        statusButttonText = "На линия";
+      });
+    } else {
+      setState(() {
+        statusButtonColor = Colors.red;
+        statusButttonText = "Зает";
+      });
+    }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'taxiZilla Шофьор - ' + name,
