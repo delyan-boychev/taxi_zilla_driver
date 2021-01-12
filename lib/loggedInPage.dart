@@ -9,14 +9,13 @@ import 'package:location/location.dart';
 
 checkForOrders() async {
   while (true) {
-    await Future.delayed(const Duration(seconds: 3), () => "3");
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     Location location = new Location();
     bool _serviceEnabled = await location.serviceEnabled();
-    final locData = await location.getLocation();
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
     } else {
+      final locData = await location.getLocation();
       final o = await userFunctions().checkForOrders(
           locData.longitude.toString(),
           locData.latitude.toString(),
@@ -41,6 +40,7 @@ checkForOrders() async {
         }
       }
     }
+    await Future.delayed(const Duration(seconds: 3), () => "3");
   }
 }
 
