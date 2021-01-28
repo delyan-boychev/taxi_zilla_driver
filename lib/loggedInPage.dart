@@ -75,53 +75,54 @@ class _loggedInState extends State<loggedInPage> {
         primarySwatch: generateMaterialColor(Color.fromRGBO(255, 237, 0, 1)),
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Container(
-                margin: new EdgeInsets.only(top: 10, bottom: 10),
-                child: Image.asset(
-                  'assets/img/logo.png',
-                  height: 60,
-                  width: 60,
+          appBar: AppBar(
+            title: Row(
+              children: [
+                Container(
+                  margin: new EdgeInsets.only(top: 10, bottom: 10),
+                  child: Image.asset(
+                    'assets/img/logo.png',
+                    height: 60,
+                    width: 60,
+                  ),
                 ),
-              ),
-              Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: new Text(name, textAlign: TextAlign.center))
-            ],
+                Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Text(name, textAlign: TextAlign.center))
+              ],
+            ),
           ),
-        ),
-        body: Container(
-            margin: const EdgeInsets.only(top: 40),
-            alignment: Alignment.topCenter,
-            child: SizedBox(
-                height: 110,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      side: BorderSide(color: Colors.black, width: 5)),
-                  color: statusButtonColor,
-                  onPressed: () {
-                    if (status == "ONLINE") {
-                      status = "BUSY";
-                      setState(() {
-                        statusButtonColor = Colors.red;
-                        statusButttonText = "Зает";
-                      });
-                    } else {
-                      status = "ONLINE";
-                      setState(() {
-                        statusButtonColor = Colors.green;
-                        statusButttonText = "На линия";
-                      });
-                    }
-                  },
+          body: Container(
+              margin: const EdgeInsets.only(top: 40),
+              alignment: Alignment.topCenter,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: CircleBorder(), primary: statusButtonColor),
+                onPressed: () {
+                  if (status == "ONLINE") {
+                    status = "BUSY";
+                    setState(() {
+                      statusButtonColor = Colors.red;
+                      statusButttonText = "Зает";
+                    });
+                  } else {
+                    status = "ONLINE";
+                    setState(() {
+                      statusButtonColor = Colors.green;
+                      statusButttonText = "На линия";
+                    });
+                  }
+                },
+                child: Container(
+                  width: 300,
+                  height: 300,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(shape: BoxShape.circle),
                   child: Text('$statusButttonText',
                       textAlign: TextAlign.center,
                       style: new TextStyle(fontSize: 50)),
-                ))),
-      ),
+                ),
+              ))),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'main.dart';
 import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
@@ -21,6 +22,17 @@ class _newOrderState extends State<newOrderPage> {
   var player = AudioPlayer();
   void startPlayer() async {
     player = await cache.loop('sound/alarm.mp3');
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+            'taxi_zilla_bg', 'taxi_zilla_bg', 'taxi_zilla_bg',
+            importance: Importance.max,
+            priority: Priority.high,
+            showWhen: false);
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(0, 'Нова поръчка',
+        'Имате нова поръчка в taxiZilla!', platformChannelSpecifics,
+        payload: 'item x');
   }
 
   void stopPlayer() async {

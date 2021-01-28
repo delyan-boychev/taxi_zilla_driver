@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'userFunctions.dart';
@@ -12,6 +13,12 @@ var orderID;
 var email;
 var address;
 var status = "ONLINE";
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@drawable/notification');
+final InitializationSettings initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid);
 MaterialColor primary = generateMaterialColor(Color.fromRGBO(255, 237, 0, 1));
 Color primaryColor = Color.fromRGBO(255, 237, 0, 1);
 MaterialColor generateMaterialColor(Color color) {
@@ -39,6 +46,7 @@ void requestPermissions() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   requestPermissions();
 
   final dir = await getExternalStorageDirectory();

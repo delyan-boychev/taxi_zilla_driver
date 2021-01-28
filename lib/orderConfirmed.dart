@@ -39,45 +39,51 @@ class orderConfirmed extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                      height: 90,
-                      width: 200,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(color: Colors.green)),
-                        color: Colors.green,
-                        onPressed: () {
-                          status = "ONLINE";
-                          userFunctions().finishOrder();
-                          runApp(loggedInPage());
-                        },
-                        child: Text('Приключи поръчка',
-                            textAlign: TextAlign.center,
-                            style: new TextStyle(fontSize: 25)),
-                      )),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10.0),
+                    child: SizedBox(
+                        height: 90,
+                        width: 200,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Colors.green)),
+                          color: Colors.green,
+                          onPressed: () {
+                            status = "ONLINE";
+                            userFunctions().finishOrder();
+                            runApp(loggedInPage());
+                          },
+                          child: Text('Приключи поръчка',
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(fontSize: 25)),
+                        )),
+                  ),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                      height: 90,
-                      width: 200,
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            side: BorderSide(color: Colors.green)),
-                        color: Colors.red,
-                        onPressed: () {
-                          status = "BUSY";
-                          userFunctions().rejectOrderAfterAccept();
-                          runApp(loggedInPage());
-                        },
-                        child: Text('Откажи поръчка',
-                            textAlign: TextAlign.center,
-                            style: new TextStyle(fontSize: 25)),
-                      )),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10.0),
+                    child: SizedBox(
+                        height: 90,
+                        width: 200,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: Colors.red)),
+                          color: Colors.red,
+                          onPressed: () {
+                            status = "BUSY";
+                            userFunctions().rejectOrderAfterAccept();
+                            runApp(loggedInPage());
+                          },
+                          child: Text('Откажи поръчка',
+                              textAlign: TextAlign.center,
+                              style: new TextStyle(fontSize: 25)),
+                        )),
+                  ),
                 ],
               )
             ],
