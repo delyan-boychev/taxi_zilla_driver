@@ -65,9 +65,7 @@ class userFunctions {
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
   String algorithm() {
-    DateTime date = new DateTime.now();
-    DateTime dateUTC = new DateTime.utc(
-        date.year, date.month, date.day, date.hour, date.minute, date.second);
+    DateTime dateUTC = new DateTime.now().toUtc();
     var data =
         "${dateUTC.year}${dateUTC.day.toString().padLeft(2, '0')}${dateUTC.month.toString().padLeft(2, '0')}${dateUTC.hour.toString().padLeft(2, '0')}${dateUTC.minute.toString().padLeft(2, '0')}${dateUTC.second.toString().padLeft(2, '0')}";
     var result = "";
