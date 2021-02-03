@@ -4,9 +4,12 @@ import 'package:path_provider/path_provider.dart';
 import 'main.dart';
 import 'package:http/http.dart' as http;
 
+//Class Session
 class Session {
+  //Biskvitki
   Map<String, String> cookies = {};
 
+  //Funkciq za updatevane na biskvitkite
   void _updateCookie(http.Response response) {
     String allSetCookie = response.headers['set-cookie'];
 
@@ -25,14 +28,13 @@ class Session {
     }
   }
 
+  //Funkciq za suzdavane na biskvitki
   void _setCookie(String rawCookie) {
     if (rawCookie.length > 0) {
       var keyValue = rawCookie.split('=');
       if (keyValue.length == 2) {
         var key = keyValue[0].trim();
         var value = keyValue[1];
-
-        // ignore keys that aren't cookies
         if (key == 'path' ||
             key == 'Path' ||
             key == 'expires' ||
@@ -44,6 +46,7 @@ class Session {
     }
   }
 
+  //Funkciq za generirane na heduri s biskvitki
   String _generateCookieHeader() {
     String cookie = "";
 
@@ -55,6 +58,7 @@ class Session {
     return cookie;
   }
 
+  //Funkciq za get zaqvka
   Future<String> get(String url) async {
     try {
       http.Response response = await http.get(url, headers: headers);
@@ -74,6 +78,7 @@ class Session {
     }
   }
 
+  //Funkciq za post zaqvka
   Future<String> post(String url, dynamic data) async {
     try {
       http.Response response =

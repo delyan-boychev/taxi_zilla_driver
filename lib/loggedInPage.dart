@@ -7,6 +7,7 @@ import 'userFunctions.dart';
 import 'newOrderPage.dart';
 import 'package:location/location.dart';
 
+//Proverka za poruchki na vseki 3 sekundi
 checkForOrders() async {
   while (true) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
@@ -44,16 +45,18 @@ checkForOrders() async {
   }
 }
 
+//Stranica kogato shofyoryt e vlqzul
 class loggedInPage extends StatefulWidget {
   @override
   _loggedInState createState() => _loggedInState();
 }
 
+//State na stranicata
 class _loggedInState extends State<loggedInPage> {
   var statusButttonText = "На линия";
   var statusButtonColor = Colors.green;
 
-  // This widget is the root of your application.
+  //Osnova na stranicata
   @override
   Widget build(BuildContext context) {
     checkForOrders();

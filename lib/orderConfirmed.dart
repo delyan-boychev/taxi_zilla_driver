@@ -4,8 +4,9 @@ import 'package:taxi_zilla_driver/loggedInPage.dart';
 import 'userFunctions.dart';
 import 'main.dart';
 
+//Stranica za prieta poruchka
 class orderConfirmed extends StatelessWidget {
-  // This widget is the root of your application.
+  //Osnova na stranuicata
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);

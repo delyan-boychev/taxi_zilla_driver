@@ -6,23 +6,28 @@ import 'dart:convert';
 import 'dart:io';
 import 'Session.dart';
 
+//Class userFunctions
 class userFunctions {
+  //Deklarirane na promenlivi
   final key = Key.fromUtf8("QfTjWnZq4t7w!z%C*F-JaNdRgUkXp2s5");
   final iv = IV.fromLength(16);
+  //Kriptirane na kredentiali
   String encryptCredentials(String creditinals) {
     final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
     final encrypted = encrypter.encrypt(creditinals, iv: iv);
     return encrypted.base64;
   }
 
+  //Funkciq za otkazvane na poruchka sled priemane
   void rejectOrderAfterAccept() async {
-    final resp = await Session().post(
+    await Session().post(
         "https://taxizilla.cheapsoftbg.com/order/rejectOrderAfterAccept", {
       'orderID': orderID.toString(),
       'senderID': order["sender"]["id"].toString()
     });
   }
 
+  //Funkciq za vzemane na imeto na taksimetrov shofyor
   Future<String> getNameTaxiDriver() async {
     final resp =
         await Session().get("https://taxizilla.cheapsoftbg.com/auth/profile");
@@ -30,6 +35,7 @@ class userFunctions {
     return json["fName"] + " " + json["lName"];
   }
 
+  //Funkciq za proverqvane na poruchki i updatevane na mestopolojenie i status
   Future<String> checkForOrders(String x, String y, String status) async {
     final resp = await Session().post(
         "https://taxizilla.cheapsoftbg.com/auth/changeStatusAndCheckForOrders",
@@ -40,11 +46,13 @@ class userFunctions {
       return resp;
   }
 
+  //Funkciq za priklyuchvane na poruchka
   void finishOrder() async {
     await Session().post(
         "https://taxizilla.cheapsoftbg.com/order/finishOrder", {'id': orderID});
   }
 
+  //Funkciq za vzemane na adres ot koordinati
   Future<String> getAdresssByCoords(String x, String y) async {
     final resp = await Session().get(
         "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=$x, $y&f=pjson");
@@ -52,6 +60,7 @@ class userFunctions {
     return "${a["address"]["LongLabel"]}";
   }
 
+  //Funkciq za priemane na poruchka
   void acceptOrder() async {
     final resp = await Session()
         .post("https://taxizilla.cheapsoftbg.com/order/acceptOrder", {});
@@ -62,8 +71,11 @@ class userFunctions {
       "\$%!@#^&*()-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   Random _rnd = Random();
 
+  //Funkciq za generirane na random string po zadadena duljina
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
+  //Funkciq za generirane na klyuch za verifikaciq pri login
   String algorithm() {
     DateTime dateUTC = new DateTime.now().toUtc();
     var data =
@@ -78,17 +90,20 @@ class userFunctions {
     return result;
   }
 
+  //Funkciq za otkazvane na poruchka
   void rejectOrder() async {
     await Session()
         .post("https://taxizilla.cheapsoftbg.com/order/rejectOrder", {});
   }
 
+  //Funkciq za dekriptirane na credentiali
   String decryptCredentials(String creditinals) {
     final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
     final decrypted = encrypter.decrypt64(creditinals, iv: iv);
     return decrypted;
   }
 
+  //Funkciq za login na taksimetrovi shofyori
   Future<bool> logInTaxiDriver(String json) async {
     var parsedJson = jsonDecode(decryptCredentials(json));
     parsedJson["key"] = algorithm();
@@ -101,6 +116,7 @@ class userFunctions {
     }
   }
 
+  //Funkciq za purvonachalen login na taksimetrov shofyor
   Future<bool> logInTaxiDriverFirstTime(String email, String password) async {
     final response = await Session().post(
         "https://taxizilla.cheapsoftbg.com/auth/loginTaxiDriver",

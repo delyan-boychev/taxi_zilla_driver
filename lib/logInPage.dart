@@ -4,6 +4,7 @@ import 'main.dart';
 import 'userFunctions.dart';
 import 'loggedInPage.dart';
 
+//Stranica za login na shofyor
 class loginPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -33,6 +34,7 @@ class loginPage extends StatelessWidget {
   }
 }
 
+//Stranica za vlizane v prilojenieto
 class loginForm extends StatefulWidget {
   @override
   loginFormState createState() {
@@ -40,21 +42,16 @@ class loginForm extends StatefulWidget {
   }
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form.
+//State na stranicata
 class loginFormState extends State<loginForm> {
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  //Osnova na stranicata
   @override
   Widget build(BuildContext context) {
-    // Build a Form widget using the _formKey created above.
+    //Formulqr za login
     return Form(
       key: _formKey,
       child: Column(
@@ -99,16 +96,14 @@ class loginFormState extends State<loginForm> {
               obscureText: true,
             ),
           ),
+          //Buton za login
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: ElevatedButton(
                 onPressed: () {
-                  // Validate returns true if the form is valid, or false
-                  // otherwise.
                   if (_formKey.currentState.validate()) {
-                    // If the form is valid, display a Snackbar.
                     userFunctions()
                         .logInTaxiDriverFirstTime(
                             emailController.text, passwordController.text)

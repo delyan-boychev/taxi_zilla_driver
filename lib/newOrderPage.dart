@@ -11,16 +11,20 @@ import 'userFunctions.dart';
 import 'loggedInPage.dart';
 import 'orderConfirmed.dart';
 
+//Stranica za priemane ili otkazvane na poruchka
 class newOrderPage extends StatefulWidget {
   @override
   _newOrderState createState() => _newOrderState();
 }
 
+//State na stranicata
 class _newOrderState extends State<newOrderPage> {
+  //Deklarirane na promenlivi
   int a = 20;
   final cache = AudioCache();
   var player = AudioPlayer();
-  void startPlayer() async {
+  //Fuknkciq za puskane na ton za izvestqvane i notifikaciq
+  void startPlayerAndPushNotification() async {
     player = await cache.loop('sound/alarm.mp3');
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
@@ -35,14 +39,16 @@ class _newOrderState extends State<newOrderPage> {
         payload: 'item x');
   }
 
+  //Funkciq za spirane na tona za izvestqvane
   void stopPlayer() async {
     player.stop();
   }
 
+  //Funkciq pri startirane
   @override
   void initState() {
     super.initState();
-    startPlayer();
+    startPlayerAndPushNotification();
     Timer.periodic(Duration(seconds: 1), (timer) async {
       if (a == 0) {
         userFunctions().rejectOrder();
@@ -57,7 +63,7 @@ class _newOrderState extends State<newOrderPage> {
     });
   }
 
-  // This widget is the root of your application.
+  //Osnova na stranicata
   @override
   Widget build(BuildContext context) {
     CountDownController _controller = CountDownController();

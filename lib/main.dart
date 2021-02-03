@@ -7,6 +7,7 @@ import 'logInPage.dart';
 import 'dart:io';
 import 'loggedInPage.dart';
 
+//Deklarirane na promenlivi nujni na prilojenieto
 var name;
 var order;
 var orderID;
@@ -21,6 +22,8 @@ final InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
 MaterialColor primary = generateMaterialColor(Color.fromRGBO(255, 237, 0, 1));
 Color primaryColor = Color.fromRGBO(255, 237, 0, 1);
+
+//Funkciq za generirane na MaterialColor ot daden Color
 MaterialColor generateMaterialColor(Color color) {
   return MaterialColor(color.value, {
     50: color,
@@ -36,7 +39,10 @@ MaterialColor generateMaterialColor(Color color) {
   });
 }
 
+//Heduri nujni pri post i get zaqvki
 Map<String, String> headers = {};
+
+//Davene na dostup do mestoplojenie i storage
 void requestPermissions() async {
   await [
     Permission.location,
@@ -44,6 +50,7 @@ void requestPermissions() async {
   ].request();
 }
 
+//Driver code
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
