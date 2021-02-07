@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.taxi_zilla_driver">
+    package="com.taxiZilla.taxi_zilla_driver">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -9,7 +9,7 @@
         android:label="taxiZilla Шофьор"
         android:icon="@mipmap/launcher_icon">
         <service
-    android:name="com.example.taxi_zilla_driver.CloseService"
+    android:name=".CloseService"
     android:stopWithTask="false"/>
         <activity
             android:name=".MainActivity"
