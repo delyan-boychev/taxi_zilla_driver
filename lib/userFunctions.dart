@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrypt/encrypt.dart';
+import 'package:taxi_zilla_driver/loggedInPage.dart';
 import 'main.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -27,11 +28,59 @@ class userFunctions {
     });
   }
 
+  Future<bool> checkCityIsSupported() async {
+    final resp = await Session().post(
+        "https://taxizilla.cheapsoftbg.com/auth/getCitiesByFirmId",
+        {'firmID': profile["firmId"].toString()});
+    var json = jsonDecode(resp);
+    var exists = false;
+    if (order["address"].toString() != "" &&
+        order["address"].toString() != " ") {
+      RegExp regex =
+          new RegExp(r"[*]*[,] ((?:град|село) [а-яА-Я ]*), ([а-яА-Я ]*)");
+      var matches = regex.allMatches(order["address"].toString());
+      for (var el in json) {
+        for (Match match in matches) {
+          if (el["city"].toString().contains(match.group(1).trim()) &&
+              el["region"].toString().contains(match.group(2).trim())) {
+            exists = true;
+          }
+        }
+      }
+    } else {
+      final resp2 = await Session().get(
+          "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=" +
+              order["x"].toString() +
+              ", " +
+              order["y"].toString() +
+              "&f=pjson");
+      final json2 = jsonDecode(resp2);
+      for (var el in json) {
+        if (el["city"]
+                .toString()
+                .contains(json2["address"]["City"].toString()) &&
+            el["region"]
+                .toString()
+                .contains(json2["address"]["Region"].toString())) {
+          exists = true;
+        }
+      }
+    }
+    if (!exists) {
+      rejectOrder();
+    }
+    return exists;
+  }
+
   //Funkciq za vzemane na imeto na taksimetrov shofyor
   Future<String> getNameTaxiDriver() async {
     final resp =
         await Session().get("https://taxizilla.cheapsoftbg.com/auth/profile");
     final json = jsonDecode(resp);
+    profile = jsonDecode(resp);
+    final directory = await getExternalStorageDirectory();
+    final File driverID = new File("${directory.path}/driverID");
+    driverID.writeAsString(profile["id"].toString());
     return json["fName"] + " " + json["lName"];
   }
 

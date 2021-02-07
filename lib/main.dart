@@ -10,6 +10,7 @@ import 'loggedInPage.dart';
 //Deklarirane na promenlivi nujni na prilojenieto
 var name;
 var order;
+Map profile;
 var orderID;
 var email;
 var address;
@@ -55,7 +56,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   requestPermissions();
-
   final dir = await getExternalStorageDirectory();
   if (await File(dir.path + "/credentials").exists()) {
     final isLoggedIn = await userFunctions()

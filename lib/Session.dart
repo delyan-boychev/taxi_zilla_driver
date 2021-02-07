@@ -78,6 +78,10 @@ class Session {
     }
   }
 
+  void postExit(String url, dynamic data) {
+    http.post(url, body: data, headers: headers);
+  }
+
   //Funkciq za post zaqvka
   Future<String> post(String url, dynamic data) async {
     try {

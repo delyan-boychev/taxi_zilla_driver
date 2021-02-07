@@ -6,44 +6,7 @@ import 'dart:async';
 import 'userFunctions.dart';
 import 'newOrderPage.dart';
 import 'package:location/location.dart';
-
-//Proverka za poruchki na vseki 3 sekundi
-checkForOrders() async {
-  while (true) {
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    Location location = new Location();
-    bool _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-    } else {
-      final locData = await location.getLocation();
-      final o = await userFunctions().checkForOrders(
-          locData.longitude.toString(),
-          locData.latitude.toString(),
-          status.toString());
-      if (o != null) {
-        if (o.contains("address") && o.contains("x")) {
-          if (status == "BUSY") {
-            userFunctions().rejectOrder();
-          } else {
-            order = jsonDecode(o);
-            status = "BUSY";
-            await userFunctions().checkForOrders(locData.longitude.toString(),
-                locData.latitude.toString(), status.toString());
-            if (order["address"] != "")
-              address = order["address"];
-            else
-              address = await userFunctions()
-                  .getAdresssByCoords(order["x"], order["y"]);
-            runApp(newOrderPage());
-            break;
-          }
-        }
-      }
-    }
-    await Future.delayed(const Duration(seconds: 3), () => "3");
-  }
-}
+import 'package:http/http.dart' as http;
 
 //Stranica kogato shofyoryt e vlqzul
 class loggedInPage extends StatefulWidget {
@@ -52,14 +15,61 @@ class loggedInPage extends StatefulWidget {
 }
 
 //State na stranicata
-class _loggedInState extends State<loggedInPage> {
+class _loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
   var statusButttonText = "На линия";
   var statusButtonColor = Colors.green;
+  //Proverka za poruchki na vseki 3 sekundi
+  checkForOrders() async {
+    Location location = new Location();
+    bool _serviceEnabled;
+    var citySupported;
+    var locData;
+    var o;
+    while (true) {
+      SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+      _serviceEnabled = await location.serviceEnabled();
+      if (!_serviceEnabled) {
+        _serviceEnabled = await location.requestService();
+      } else {
+        locData = await location.getLocation();
+        o = await userFunctions().checkForOrders(locData.longitude.toString(),
+            locData.latitude.toString(), status.toString());
+        if (o != null) {
+          if (o.contains("address") && o.contains("x")) {
+            if (status == "BUSY") {
+              userFunctions().rejectOrder();
+            } else {
+              order = jsonDecode(o);
+              status = "BUSY";
+              await userFunctions().checkForOrders(locData.longitude.toString(),
+                  locData.latitude.toString(), status.toString());
+              if (order["address"] != "")
+                address = order["address"];
+              else
+                address = await userFunctions()
+                    .getAdresssByCoords(order["x"], order["y"]);
+              citySupported = await userFunctions().checkCityIsSupported();
+              if (citySupported) {
+                runApp(newOrderPage());
+                break;
+              }
+            }
+          }
+        }
+        await Future.delayed(const Duration(seconds: 3), () => "3");
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkForOrders();
+  }
 
   //Osnova na stranicata
   @override
   Widget build(BuildContext context) {
-    checkForOrders();
     if (status == "ONLINE") {
       setState(() {
         statusButtonColor = Colors.green;
