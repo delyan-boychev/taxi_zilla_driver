@@ -5,6 +5,7 @@ import 'userFunctions.dart';
 import 'main.dart';
 
 //Stranica za prieta poruchka
+// ignore: camel_case_types
 class orderConfirmed extends StatelessWidget {
   //Osnova na stranuicata
   @override

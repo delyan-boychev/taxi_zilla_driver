@@ -6,16 +6,17 @@ import 'dart:async';
 import 'userFunctions.dart';
 import 'newOrderPage.dart';
 import 'package:location/location.dart';
-import 'package:http/http.dart' as http;
 
 //Stranica kogato shofyoryt e vlqzul
+// ignore: camel_case_types
 class loggedInPage extends StatefulWidget {
   @override
-  _loggedInState createState() => _loggedInState();
+  loggedInState createState() => loggedInState();
 }
 
 //State na stranicata
-class _loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
+// ignore: camel_case_types
+class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
   var statusButttonText = "На линия";
   var statusButtonColor = Colors.green;
   //Proverka za poruchki na vseki 3 sekundi
@@ -52,6 +53,12 @@ class _loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
               if (citySupported) {
                 runApp(newOrderPage());
                 break;
+              } else {
+                status = "ONLINE";
+                await userFunctions().checkForOrders(
+                    locData.longitude.toString(),
+                    locData.latitude.toString(),
+                    status.toString());
               }
             }
           }

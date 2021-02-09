@@ -5,6 +5,7 @@ import 'userFunctions.dart';
 import 'loggedInPage.dart';
 
 //Stranica za login na shofyor
+// ignore: camel_case_types
 class loginPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -35,6 +36,7 @@ class loginPage extends StatelessWidget {
 }
 
 //Stranica za vlizane v prilojenieto
+// ignore: camel_case_types
 class loginForm extends StatefulWidget {
   @override
   loginFormState createState() {
@@ -43,6 +45,7 @@ class loginForm extends StatefulWidget {
 }
 
 //State na stranicata
+// ignore: camel_case_types
 class loginFormState extends State<loginForm> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();

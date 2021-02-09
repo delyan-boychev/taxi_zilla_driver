@@ -12,13 +12,15 @@ import 'loggedInPage.dart';
 import 'orderConfirmed.dart';
 
 //Stranica za priemane ili otkazvane na poruchka
+// ignore: camel_case_types
 class newOrderPage extends StatefulWidget {
   @override
-  _newOrderState createState() => _newOrderState();
+  newOrderState createState() => newOrderState();
 }
 
 //State na stranicata
-class _newOrderState extends State<newOrderPage> {
+// ignore: camel_case_types
+class newOrderState extends State<newOrderPage> {
   //Deklarirane na promenlivi
   int a = 20;
   final cache = AudioCache();

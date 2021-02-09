@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrypt/encrypt.dart';
-import 'package:taxi_zilla_driver/loggedInPage.dart';
 import 'main.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'Session.dart';
 
 //Class userFunctions
+// ignore: camel_case_types
 class userFunctions {
   //Deklarirane na promenlivi
   final key = Key.fromUtf8("QfTjWnZq4t7w!z%C*F-JaNdRgUkXp2s5");
