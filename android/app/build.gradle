@@ -60,4 +60,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation fileTree(dir: 'D:\\projects\\taxi_zilla_driver\\android\\app\\libs', include: ['*.aar', '*.jar'], exclude: [])
 }

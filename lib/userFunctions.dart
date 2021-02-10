@@ -4,6 +4,7 @@ import 'package:encrypt/encrypt.dart';
 import 'main.dart';
 import 'dart:convert';
 import 'dart:io';
+import 'package:ntp/ntp.dart';
 import 'Session.dart';
 
 //Class userFunctions
@@ -154,8 +155,15 @@ class userFunctions {
 
   //Funkciq za login na taksimetrovi shofyori
   Future<bool> logInTaxiDriver(String json) async {
+    DateTime _myTime;
+    DateTime _ntpTime;
+    _myTime = await NTP.now();
+    final int offset = await NTP.getNtpOffset(localTime: DateTime.now());
+    _ntpTime = _myTime.add(Duration(milliseconds: offset));
     var parsedJson = jsonDecode(decryptCredentials(json));
     parsedJson["key"] = algorithm();
+    parsedJson["offset"] =
+        _myTime.difference(_ntpTime).inMilliseconds.toString();
     final j = await Session().post(
         "https://taxizilla.cheapsoftbg.com/auth/loginTaxiDriver", parsedJson);
     if (j == "true") {
@@ -167,9 +175,18 @@ class userFunctions {
 
   //Funkciq za purvonachalen login na taksimetrov shofyor
   Future<bool> logInTaxiDriverFirstTime(String email, String password) async {
-    final response = await Session().post(
-        "https://taxizilla.cheapsoftbg.com/auth/loginTaxiDriver",
-        {'email': email, 'password': password, 'key': algorithm()});
+    DateTime _myTime;
+    DateTime _ntpTime;
+    _myTime = await NTP.now();
+    final int offset = await NTP.getNtpOffset(localTime: DateTime.now());
+    _ntpTime = _myTime.add(Duration(milliseconds: offset));
+    final response = await Session()
+        .post("https://taxizilla.cheapsoftbg.com/auth/loginTaxiDriver", {
+      'email': email,
+      'password': password,
+      'key': algorithm(),
+      'offset': _myTime.difference(_ntpTime).inMilliseconds.toString()
+    });
     if (response == "true") {
       final directory = await getExternalStorageDirectory();
       final File credentialsFile = new File("${directory.path}/credentials");

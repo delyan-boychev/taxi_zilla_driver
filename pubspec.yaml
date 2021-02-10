@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  ntp: ^1.0.7
   flutter:
     sdk: flutter
   location: ^3.0.0
