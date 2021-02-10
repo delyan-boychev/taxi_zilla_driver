@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.TimeZone;
 
-import io.flutter.Log;
-
 public class CloseService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
@@ -79,7 +77,6 @@ public class CloseService extends Service {
             Long delayValue = info.getDelay();
             String delay = (delayValue == null) ? "N/A" : delayValue.toString();
             String offset = (offsetValue == null) ? "N/A" : offsetValue.toString();
-            Log.e("", offset);
             File folder = this.getExternalFilesDir(null);
             if (new File(folder, "credentials").isFile() && new File(folder, "driverID").isFile()) {
                 File myFile = new File(folder, "driverID");
