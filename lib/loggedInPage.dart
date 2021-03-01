@@ -19,13 +19,13 @@ class loggedInPage extends StatefulWidget {
 class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
   var statusButttonText = "На линия";
   var statusButtonColor = Colors.green;
+  Location location = new Location();
+  bool _serviceEnabled;
+  var citySupported;
+  var locData;
+  var o;
   //Proverka za poruchki na vseki 3 sekundi
   checkForOrders() async {
-    Location location = new Location();
-    bool _serviceEnabled;
-    var citySupported;
-    var locData;
-    var o;
     while (true) {
       SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
       _serviceEnabled = await location.serviceEnabled();

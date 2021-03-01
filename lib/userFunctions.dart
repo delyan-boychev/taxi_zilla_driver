@@ -23,7 +23,7 @@ class userFunctions {
   //Funkciq za otkazvane na poruchka sled priemane
   void rejectOrderAfterAccept() async {
     await Session().post(
-        "https://taxizilla.cheapsoftbg.com/order/rejectOrderAfterAccept", {
+        "https://taxizillabg.com/order/rejectOrderAfterAccept", {
       'orderID': orderID.toString(),
       'senderID': order["sender"]["id"].toString()
     });
@@ -31,7 +31,7 @@ class userFunctions {
 
   Future<bool> checkCityIsSupported() async {
     final resp = await Session().post(
-        "https://taxizilla.cheapsoftbg.com/auth/getCitiesByFirmId",
+        "https://taxizillabg.com/auth/getCitiesByFirmId",
         {'firmID': profile["firmId"].toString()});
     var json = jsonDecode(resp);
     var exists = false;
@@ -75,8 +75,7 @@ class userFunctions {
 
   //Funkciq za vzemane na imeto na taksimetrov shofyor
   Future<String> getNameTaxiDriver() async {
-    final resp =
-        await Session().get("https://taxizilla.cheapsoftbg.com/auth/profile");
+    final resp = await Session().get("https://taxizillabg.com/auth/profile");
     final json = jsonDecode(resp);
     profile = jsonDecode(resp);
     final directory = await getExternalStorageDirectory();
@@ -88,7 +87,7 @@ class userFunctions {
   //Funkciq za proverqvane na poruchki i updatevane na mestopolojenie i status
   Future<String> checkForOrders(String x, String y, String status) async {
     final resp = await Session().post(
-        "https://taxizilla.cheapsoftbg.com/auth/changeStatusAndCheckForOrders",
+        "https://taxizillabg.com/auth/changeStatusAndCheckForOrders",
         {'x': x, 'y': y, 'newStatus': status});
     if (resp == "")
       return null;
@@ -98,8 +97,8 @@ class userFunctions {
 
   //Funkciq za priklyuchvane na poruchka
   void finishOrder() async {
-    await Session().post(
-        "https://taxizilla.cheapsoftbg.com/order/finishOrder", {'id': orderID});
+    await Session()
+        .post("https://taxizillabg.com/order/finishOrder", {'id': orderID});
   }
 
   //Funkciq za vzemane na adres ot koordinati
@@ -112,8 +111,8 @@ class userFunctions {
 
   //Funkciq za priemane na poruchka
   void acceptOrder() async {
-    final resp = await Session()
-        .post("https://taxizilla.cheapsoftbg.com/order/acceptOrder", {});
+    final resp =
+        await Session().post("https://taxizillabg.com/order/acceptOrder", {});
     orderID = resp;
   }
 
@@ -142,8 +141,7 @@ class userFunctions {
 
   //Funkciq za otkazvane na poruchka
   void rejectOrder() async {
-    await Session()
-        .post("https://taxizilla.cheapsoftbg.com/order/rejectOrder", {});
+    await Session().post("https://taxizillabg.com/order/rejectOrder", {});
   }
 
   //Funkciq za dekriptirane na credentiali
@@ -164,8 +162,8 @@ class userFunctions {
     parsedJson["key"] = algorithm();
     parsedJson["offset"] =
         _myTime.difference(_ntpTime).inMilliseconds.toString();
-    final j = await Session().post(
-        "https://taxizilla.cheapsoftbg.com/auth/loginTaxiDriver", parsedJson);
+    final j = await Session()
+        .post("https://taxizillabg.com/auth/loginTaxiDriver", parsedJson);
     if (j == "true") {
       return true;
     } else {
@@ -180,8 +178,8 @@ class userFunctions {
     _myTime = await NTP.now();
     final int offset = await NTP.getNtpOffset(localTime: DateTime.now());
     _ntpTime = _myTime.add(Duration(milliseconds: offset));
-    final response = await Session()
-        .post("https://taxizilla.cheapsoftbg.com/auth/loginTaxiDriver", {
+    final response =
+        await Session().post("https://taxizillabg.com/auth/loginTaxiDriver", {
       'email': email,
       'password': password,
       'key': algorithm(),
