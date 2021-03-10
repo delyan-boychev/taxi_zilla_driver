@@ -24,54 +24,58 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
   var citySupported;
   var locData;
   var o;
-  //Proverka za poruchki na vseki 3 sekundi
-  checkForOrders() async {
-    while (true) {
-      SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-      _serviceEnabled = await location.serviceEnabled();
-      if (!_serviceEnabled) {
-        _serviceEnabled = await location.requestService();
-      } else {
-        locData = await location.getLocation();
-        o = await userFunctions().checkForOrders(locData.longitude.toString(),
-            locData.latitude.toString(), status.toString());
-        if (o != null) {
-          if (o.contains("address") && o.contains("x")) {
-            if (status == "BUSY") {
-              userFunctions().rejectOrder();
-            } else {
-              order = jsonDecode(o);
-              status = "BUSY";
-              await userFunctions().checkForOrders(locData.longitude.toString(),
-                  locData.latitude.toString(), status.toString());
-              if (order["address"] != "")
-                address = order["address"];
-              else
-                address = await userFunctions()
-                    .getAdresssByCoords(order["x"], order["y"]);
-              citySupported = await userFunctions().checkCityIsSupported();
-              if (citySupported) {
-                runApp(newOrderPage());
-                break;
-              } else {
-                status = "ONLINE";
-                await userFunctions().checkForOrders(
-                    locData.longitude.toString(),
-                    locData.latitude.toString(),
-                    status.toString());
-              }
-            }
-          }
-        }
-        await Future.delayed(const Duration(seconds: 3), () => "3");
-      }
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    checkForOrders();
+    Timer.periodic(Duration(seconds: 3), (timer) async {
+      print(isChecking);
+      SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+      if (!isChecking) {
+        isChecking = true;
+        _serviceEnabled = await location.serviceEnabled();
+        if (!_serviceEnabled) {
+          _serviceEnabled = await location.requestService();
+          isChecking = false;
+        } else {
+          locData = await location.getLocation();
+          o = await userFunctions().checkForOrders(locData.longitude.toString(),
+              locData.latitude.toString(), status.toString());
+          if (o != null) {
+            if (o.contains("address") && o.contains("x")) {
+              if (status == "BUSY") {
+                userFunctions().rejectOrder();
+              } else {
+                order = jsonDecode(o);
+                status = "BUSY";
+                await userFunctions().checkForOrders(
+                    locData.longitude.toString(),
+                    locData.latitude.toString(),
+                    status.toString());
+                if (order["address"] != "")
+                  address = order["address"];
+                else
+                  address = await userFunctions()
+                      .getAdresssByCoords(order["x"], order["y"]);
+                citySupported = await userFunctions().checkCityIsSupported();
+                if (citySupported) {
+                  runApp(newOrderPage());
+                  isChecking = false;
+                  timer.cancel();
+                } else {
+                  status = "ONLINE";
+                  await userFunctions().checkForOrders(
+                      locData.longitude.toString(),
+                      locData.latitude.toString(),
+                      status.toString());
+                }
+              }
+            }
+          }
+          isChecking = false;
+        }
+      }
+    });
   }
 
   //Osnova na stranicata

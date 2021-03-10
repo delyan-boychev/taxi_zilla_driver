@@ -35,35 +35,37 @@ class userFunctions {
         {'firmID': profile["firmId"].toString()});
     var json = jsonDecode(resp);
     var exists = false;
-    if (order["address"].toString() != "" &&
-        order["address"].toString() != " ") {
-      RegExp regex =
-          new RegExp(r"[*]*[,] ((?:град|село) [а-яА-Я ]*), ([а-яА-Я ]*)");
-      var matches = regex.allMatches(order["address"].toString());
-      for (var el in json) {
-        for (Match match in matches) {
-          if (el["city"].toString().contains(match.group(1).trim()) &&
-              el["region"].toString().contains(match.group(2).trim())) {
-            exists = true;
+    if (resp != "[]") {
+      if (order["address"].toString() != "" &&
+          order["address"].toString() != " ") {
+        RegExp regex =
+            new RegExp(r"[*]*[,] ((?:град|село) [а-яА-Я ]*), ([а-яА-Я ]*)");
+        var matches = regex.allMatches(order["address"].toString());
+        for (var el in json) {
+          for (Match match in matches) {
+            if (el["city"].toString().contains(match.group(1).trim()) &&
+                el["region"].toString().contains(match.group(2).trim())) {
+              exists = true;
+            }
           }
         }
-      }
-    } else {
-      final resp2 = await Session().get(
-          "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=" +
-              order["x"].toString() +
-              ", " +
-              order["y"].toString() +
-              "&f=pjson");
-      final json2 = jsonDecode(resp2);
-      for (var el in json) {
-        if (el["city"]
-                .toString()
-                .contains(json2["address"]["City"].toString()) &&
-            el["region"]
-                .toString()
-                .contains(json2["address"]["Region"].toString())) {
-          exists = true;
+      } else {
+        final resp2 = await Session().get(
+            "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=" +
+                order["x"].toString() +
+                ", " +
+                order["y"].toString() +
+                "&f=pjson");
+        final json2 = jsonDecode(resp2);
+        for (var el in json) {
+          if (el["city"]
+                  .toString()
+                  .contains(json2["address"]["City"].toString()) &&
+              el["region"]
+                  .toString()
+                  .contains(json2["address"]["Region"].toString())) {
+            exists = true;
+          }
         }
       }
     }

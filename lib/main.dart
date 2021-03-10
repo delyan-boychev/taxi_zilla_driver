@@ -15,6 +15,7 @@ var orderID;
 var email;
 var address;
 var status = "ONLINE";
+var isChecking = false;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 const AndroidInitializationSettings initializationSettingsAndroid =

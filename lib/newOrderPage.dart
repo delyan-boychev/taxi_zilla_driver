@@ -54,9 +54,9 @@ class newOrderState extends State<newOrderPage> {
     Timer.periodic(Duration(seconds: 1), (timer) async {
       if (a == 0) {
         userFunctions().rejectOrder();
-        runApp(loggedInPage());
         timer.cancel();
         stopPlayer();
+        runApp(loggedInPage());
       } else if (a == -1) {
         timer.cancel();
         stopPlayer();
@@ -134,7 +134,6 @@ class newOrderState extends State<newOrderPage> {
                                 side: BorderSide(color: Colors.red)),
                             color: Colors.red,
                             onPressed: () {
-                              status = "ONLINE";
                               userFunctions().rejectOrder();
                               a = -1;
                               runApp(loggedInPage());
