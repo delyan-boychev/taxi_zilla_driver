@@ -11,6 +11,7 @@ import 'Session.dart';
 // ignore: camel_case_types
 class userFunctions {
   //Deklarirane na promenlivi
+  final url = "https://taxizillabg.com";
   final key = Key.fromUtf8("QfTjWnZq4t7w!z%C*F-JaNdRgUkXp2s5");
   final iv = IV.fromLength(16);
   //Kriptirane na kredentiali
@@ -22,16 +23,14 @@ class userFunctions {
 
   //Funkciq za otkazvane na poruchka sled priemane
   void rejectOrderAfterAccept() async {
-    await Session().post(
-        "https://taxizillabg.com/order/rejectOrderAfterAccept", {
+    await Session().post("$url/order/rejectOrderAfterAccept", {
       'orderID': orderID.toString(),
       'senderID': order["sender"]["id"].toString()
     });
   }
 
   Future<bool> checkCityIsSupported() async {
-    final resp = await Session().post(
-        "https://taxizillabg.com/auth/getCitiesByFirmId",
+    final resp = await Session().post("$url/auth/getCitiesByFirmId",
         {'firmID': profile["firmId"].toString()});
     var json = jsonDecode(resp);
     var exists = false;
@@ -77,7 +76,7 @@ class userFunctions {
 
   //Funkciq za vzemane na imeto na taksimetrov shofyor
   Future<String> getNameTaxiDriver() async {
-    final resp = await Session().get("https://taxizillabg.com/auth/profile");
+    final resp = await Session().get("$url/auth/profile");
     final json = jsonDecode(resp);
     profile = jsonDecode(resp);
     final directory = await getExternalStorageDirectory();
@@ -88,8 +87,7 @@ class userFunctions {
 
   //Funkciq za proverqvane na poruchki i updatevane na mestopolojenie i status
   Future<String> checkForOrders(String x, String y, String status) async {
-    final resp = await Session().post(
-        "https://taxizillabg.com/auth/changeStatusAndCheckForOrders",
+    final resp = await Session().post("$url/auth/changeStatusAndCheckForOrders",
         {'x': x, 'y': y, 'newStatus': status});
     if (resp == "")
       return null;
@@ -99,8 +97,7 @@ class userFunctions {
 
   //Funkciq za priklyuchvane na poruchka
   void finishOrder() async {
-    await Session()
-        .post("https://taxizillabg.com/order/finishOrder", {'id': orderID});
+    await Session().post("$url/order/finishOrder", {'id': orderID});
   }
 
   //Funkciq za vzemane na adres ot koordinati
@@ -113,8 +110,7 @@ class userFunctions {
 
   //Funkciq za priemane na poruchka
   void acceptOrder() async {
-    final resp =
-        await Session().post("https://taxizillabg.com/order/acceptOrder", {});
+    final resp = await Session().post("$url/order/acceptOrder", {});
     orderID = resp;
   }
 
@@ -143,7 +139,7 @@ class userFunctions {
 
   //Funkciq za otkazvane na poruchka
   void rejectOrder() async {
-    await Session().post("https://taxizillabg.com/order/rejectOrder", {});
+    await Session().post("$url/order/rejectOrder", {});
   }
 
   //Funkciq za dekriptirane na credentiali
@@ -164,8 +160,7 @@ class userFunctions {
     parsedJson["key"] = algorithm();
     parsedJson["offset"] =
         _myTime.difference(_ntpTime).inMilliseconds.toString();
-    final j = await Session()
-        .post("https://taxizillabg.com/auth/loginTaxiDriver", parsedJson);
+    final j = await Session().post("$url/auth/loginTaxiDriver", parsedJson);
     if (j == "true") {
       return true;
     } else {
@@ -180,8 +175,7 @@ class userFunctions {
     _myTime = await NTP.now();
     final int offset = await NTP.getNtpOffset(localTime: DateTime.now());
     _ntpTime = _myTime.add(Duration(milliseconds: offset));
-    final response =
-        await Session().post("https://taxizillabg.com/auth/loginTaxiDriver", {
+    final response = await Session().post("$url/auth/loginTaxiDriver", {
       'email': email,
       'password': password,
       'key': algorithm(),
