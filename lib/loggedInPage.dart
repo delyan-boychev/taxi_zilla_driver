@@ -29,7 +29,6 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     Timer.periodic(Duration(seconds: 3), (timer) async {
-      print(isChecking);
       SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
       if (!isChecking) {
         isChecking = true;

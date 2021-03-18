@@ -46,11 +46,12 @@ class orderConfirmed extends StatelessWidget {
                     child: SizedBox(
                         height: 90,
                         width: 200,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: Colors.green)),
-                          color: Colors.green,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  side: BorderSide(color: Colors.green)),
+                              primary: Colors.green),
                           onPressed: () {
                             status = "ONLINE";
                             userFunctions().finishOrder();
@@ -71,11 +72,12 @@ class orderConfirmed extends StatelessWidget {
                     child: SizedBox(
                         height: 90,
                         width: 200,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(color: Colors.red)),
-                          color: Colors.red,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  side: BorderSide(color: Colors.red)),
+                              primary: Colors.red),
                           onPressed: () {
                             status = "BUSY";
                             userFunctions().rejectOrderAfterAccept();

@@ -111,11 +111,12 @@ class newOrderState extends State<newOrderPage> {
                     children: [
                       SizedBox(
                           height: 90,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                side: BorderSide(color: Colors.green)),
-                            color: Colors.green,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    side: BorderSide(color: Colors.green)),
+                                primary: Colors.green),
                             onPressed: () {
                               status = "BUSY";
                               userFunctions().acceptOrder();
@@ -128,11 +129,12 @@ class newOrderState extends State<newOrderPage> {
                           )),
                       SizedBox(
                           height: 90,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                side: BorderSide(color: Colors.red)),
-                            color: Colors.red,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    side: BorderSide(color: Colors.red)),
+                                primary: Colors.red),
                             onPressed: () {
                               userFunctions().rejectOrder();
                               a = -1;

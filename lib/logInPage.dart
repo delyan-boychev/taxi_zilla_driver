@@ -112,14 +112,14 @@ class loginFormState extends State<loginForm> {
                             emailController.text, passwordController.text)
                         .then((isLoggedIn) {
                       if (isLoggedIn == true) {
-                        Scaffold.of(context).showSnackBar(SnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
                                 "Успешно влязохте в профила си! Моля изчакайте...")));
                         userFunctions()
                             .getNameTaxiDriver()
                             .then((nm) => {name = nm, runApp(loggedInPage())});
                       } else {
-                        Scaffold.of(context).showSnackBar(SnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content:
                                 Text("Неправилен имейл адрес или парола!")));
                       }
