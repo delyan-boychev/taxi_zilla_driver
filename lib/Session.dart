@@ -64,6 +64,7 @@ class Session {
       http.Response response = await http.get(url, headers: headers);
       if (response.body == "401") {
         headers = {};
+        cookies = {};
         final dir = await getExternalStorageDirectory();
         userFunctions().logInTaxiDriver(
             await File(dir.path + "/credentials").readAsString());
@@ -85,6 +86,7 @@ class Session {
           await http.post(url, body: data, headers: headers);
       if (response.body == "401") {
         headers = {};
+        cookies = {};
         final dir = await getExternalStorageDirectory();
         userFunctions().logInTaxiDriver(
             await File(dir.path + "/credentials").readAsString());

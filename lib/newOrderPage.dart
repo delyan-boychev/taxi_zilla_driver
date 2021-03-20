@@ -46,10 +46,25 @@ class newOrderState extends State<newOrderPage> {
     player.stop();
   }
 
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
+
   //Funkciq pri startirane
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     startPlayerAndPushNotification();
     Timer.periodic(Duration(seconds: 1), (timer) async {
       if (a == 0) {
@@ -105,6 +120,13 @@ class newOrderState extends State<newOrderPage> {
                     style: new TextStyle(fontSize: 25),
                   )),
               Container(
+                  margin: const EdgeInsets.only(top: 5.0),
+                  child: Text(
+                    "Белжки: ${order["notes"]}",
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(fontSize: 25),
+                  )),
+              Container(
                   margin: const EdgeInsets.only(top: 40.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -121,7 +143,11 @@ class newOrderState extends State<newOrderPage> {
                               status = "BUSY";
                               userFunctions().acceptOrder();
                               a = -1;
-                              runApp(orderConfirmed());
+                              if (order["address"] == "") {
+                                address =
+                                    "Моля включете навигацията, защото адресът може да не е точен!!!";
+                              }
+                              runApp(orderConfirmedPage());
                             },
                             child: Text('Приемане',
                                 textAlign: TextAlign.center,
@@ -150,23 +176,22 @@ class newOrderState extends State<newOrderPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                      margin: const EdgeInsets.only(top: 40.0),
+                      margin: const EdgeInsets.only(top: 30.0),
                       child: CircularCountDownTimer(
                         duration: 20,
                         controller: _controller,
-                        width: 200,
-                        height: 200,
-                        color: Colors.white,
-                        fillColor: primaryColor,
+                        width: 120,
+                        height: 120,
+                        fillColor: Colors.white,
+                        ringColor: primaryColor,
                         backgroundColor: null,
                         strokeWidth: 5.0,
                         strokeCap: StrokeCap.butt,
                         textStyle: TextStyle(
-                            fontSize: 25,
+                            fontSize: 30,
                             color: Colors.black,
                             fontWeight: FontWeight.bold),
                         isReverse: true,
-                        isReverseAnimation: true,
                         isTimerTextShown: true,
                       )),
                 ],

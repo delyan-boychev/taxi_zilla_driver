@@ -1,16 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:taxi_zilla_driver/loggedInPage.dart';
+import 'package:taxi_zilla_driver/maps_sheet.dart';
 import 'userFunctions.dart';
 import 'main.dart';
 
-//Stranica za prieta poruchka
+//Stranuca za prieta poruchka
 // ignore: camel_case_types
-class orderConfirmed extends StatelessWidget {
-  //Osnova na stranuicata
+class orderConfirmedPage extends StatefulWidget {
+  @override
+  orderConfirmedState createState() => orderConfirmedState();
+}
+
+//State za stranica za prieta poruchka
+// ignore: camel_case_types
+class orderConfirmedState extends State<orderConfirmedPage> {
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  //Osnova na stranicata
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'taxiZilla Шофьор - ' + name,
@@ -38,6 +68,20 @@ class orderConfirmed extends StatelessWidget {
           ),
           body: Column(
             children: [
+              Container(
+                  margin: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "Адрес: $address",
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(fontSize: 25),
+                  )),
+              Container(
+                  margin: const EdgeInsets.only(top: 10.0),
+                  child: Text(
+                    "Бележки: ${order["notes"]}",
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(fontSize: 25),
+                  )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -87,6 +131,58 @@ class orderConfirmed extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: new TextStyle(fontSize: 25)),
                         )),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 10.0),
+                    child: SizedBox(
+                        height: 90,
+                        width: 200,
+                        child: Builder(
+                            builder: (context) => ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          side:
+                                              BorderSide(color: primaryColor)),
+                                      primary: primaryColor),
+                                  onPressed: () async {
+                                    if (order["address"] != "") {
+                                      MapsSheet.show(
+                                        context: context,
+                                        onMapTap: (map) {
+                                          map.showMarker(
+                                            coords: Coords(0, 0),
+                                            title: order["address"],
+                                            extraParams: {
+                                              'q': order["address"]
+                                            },
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      MapsSheet.show(
+                                        context: context,
+                                        onMapTap: (map) {
+                                          map.showMarker(
+                                            coords: Coords(
+                                                double.parse(order["y"]),
+                                                double.parse(order["x"])),
+                                            title: address,
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                  child: Text('Отвори навигация',
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(fontSize: 25)),
+                                ))),
                   ),
                 ],
               )

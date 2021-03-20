@@ -38,7 +38,7 @@ class userFunctions {
       if (order["address"].toString() != "" &&
           order["address"].toString() != " ") {
         RegExp regex =
-            new RegExp(r"[*]*[,] ((?:град|село) [а-яА-Я ]*), ([а-яА-Я ]*)");
+            new RegExp(r"[*]*[,] ((?:гр.|с.) [а-яА-Я ]*), ([а-яА-Я ]*)");
         var matches = regex.allMatches(order["address"].toString());
         for (var el in json) {
           for (Match match in matches) {
@@ -72,6 +72,23 @@ class userFunctions {
       rejectOrder();
     }
     return exists;
+  }
+
+  //Funkciq za izhod ot profila
+  void exitProfile() async {
+    final directory = await getExternalStorageDirectory();
+    final File credentialsFile = new File("${directory.path}/credentials");
+    credentialsFile.delete();
+    DateTime _myTime;
+    DateTime _ntpTime;
+    _myTime = await NTP.now();
+    final int offset = await NTP.getNtpOffset(localTime: DateTime.now());
+    _ntpTime = _myTime.add(Duration(milliseconds: offset));
+    Session().post("$url/auth/exitTaxiDriver", {
+      'driverID': profile["id"],
+      'key': algorithm(),
+      'offset': _myTime.difference(_ntpTime).inMilliseconds.toString()
+    });
   }
 
   //Funkciq za vzemane na imeto na taksimetrov shofyor

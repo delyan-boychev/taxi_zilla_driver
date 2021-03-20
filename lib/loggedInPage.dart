@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:taxi_zilla_driver/logInPage.dart';
 import 'main.dart';
 import 'dart:async';
 import 'userFunctions.dart';
@@ -26,8 +27,23 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
   var o;
 
   @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     Timer.periodic(Duration(seconds: 3), (timer) async {
       SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
       if (!isChecking) {
@@ -99,6 +115,17 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
       ),
       home: Scaffold(
           appBar: AppBar(
+            actions: <Widget>[
+              GestureDetector(
+                  onTap: () {
+                    userFunctions().exitProfile();
+                    runApp(loginPage());
+                  },
+                  child: Icon(
+                    Icons.exit_to_app,
+                    size: 35,
+                  )),
+            ],
             title: Row(
               children: [
                 Container(
