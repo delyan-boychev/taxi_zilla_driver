@@ -8,14 +8,15 @@ import 'dart:io';
 import 'loggedInPage.dart';
 
 //Deklarirane na promenlivi nujni na prilojenieto
-var name;
-var order;
+String name;
+Map order;
 Map profile;
-var orderID;
-var email;
-var address;
-var status = "ONLINE";
-var isChecking = false;
+String orderID;
+String orderText;
+String email;
+String address;
+String status = "ONLINE";
+bool isChecking = false;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 const AndroidInitializationSettings initializationSettingsAndroid =

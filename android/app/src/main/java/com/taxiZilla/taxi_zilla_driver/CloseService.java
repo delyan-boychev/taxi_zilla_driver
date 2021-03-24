@@ -79,16 +79,22 @@ public class CloseService extends Service {
             String offset = (offsetValue == null) ? "N/A" : offsetValue.toString();
             File folder = this.getExternalFilesDir(null);
             if (new File(folder, "credentials").isFile() && new File(folder, "driverID").isFile()) {
+                String lastOrderID = "none";
                 File myFile = new File(folder, "driverID");
                 Scanner reader = new Scanner(myFile);
                 String id = reader.nextLine();
+                if(new File(folder, "lastOrderID").isFile()) {
+                    File myFile2 = new File(folder, "lastOrderID");
+                    Scanner reader2 = new Scanner(myFile2);
+                    lastOrderID = reader2.nextLine();
+                }
                 URL url = new URL("https://taxizillabg.com/auth/exitTaxiDriver");
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("POST");
                 con.setRequestProperty("Content-Type", "application/json");
                 con.setDoOutput(true);
                 DataOutputStream out = new DataOutputStream(con.getOutputStream());
-                String jsonInputString = "{\"driverID\": \"" + id + "\", \"key\": \"" + generateKey() + "\", \"offset\": \""+ offset +"\"}";
+                String jsonInputString = "{\"driverID\": \"" + id + "\", \"lastOrderID\": \"" + lastOrderID + "\", \"key\": \"" + generateKey() + "\", \"offset\": \""+ offset +"\"}";
                 try (OutputStream os = con.getOutputStream()) {
                     byte[] input = jsonInputString.getBytes("utf-8");
                     os.write(input, 0, input.length);

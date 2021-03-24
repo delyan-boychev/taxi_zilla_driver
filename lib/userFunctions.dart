@@ -129,6 +129,9 @@ class userFunctions {
   void acceptOrder() async {
     final resp = await Session().post("$url/order/acceptOrder", {});
     orderID = resp;
+    final directory = await getExternalStorageDirectory();
+    final File orderIDFile = new File("${directory.path}/lastOrderID");
+    orderIDFile.writeAsString(orderID);
   }
 
   final _chars =
