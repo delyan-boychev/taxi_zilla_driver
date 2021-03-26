@@ -109,128 +109,139 @@ class orderConfirmedState extends State<orderConfirmedPage> {
               ],
             ),
           ),
-          body: Column(
-            children: [
-              Container(
-                  margin: const EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    "Адрес: $address",
-                    textAlign: TextAlign.center,
-                    style: new TextStyle(fontSize: 25),
-                  )),
-              Container(
-                  margin: const EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    "Бележки: ${order["notes"]}",
-                    textAlign: TextAlign.center,
-                    style: new TextStyle(fontSize: 25),
-                  )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 10.0),
-                    child: SizedBox(
-                        height: 90,
-                        width: 200,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  side: BorderSide(color: Colors.green)),
-                              primary: Colors.green),
-                          onPressed: () {
-                            status = "ONLINE";
-                            userFunctions().finishOrder();
-                            runApp(loggedInPage());
-                          },
-                          child: Text('Приключи поръчка',
-                              textAlign: TextAlign.center,
-                              style: new TextStyle(fontSize: 25)),
-                        )),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 10.0),
-                    child: SizedBox(
-                        height: 90,
-                        width: 200,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  side: BorderSide(color: Colors.red)),
-                              primary: Colors.red),
-                          onPressed: () {
-                            status = "BUSY";
-                            userFunctions().rejectOrderAfterAccept();
-                            runApp(loggedInPage());
-                          },
-                          child: Text('Откажи поръчка',
-                              textAlign: TextAlign.center,
-                              style: new TextStyle(fontSize: 25)),
-                        )),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 10.0),
-                    child: SizedBox(
-                        height: 90,
-                        width: 200,
-                        child: Builder(
-                            builder: (context) => ElevatedButton(
+          body: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Container(
+                          margin: const EdgeInsets.only(top: 10.0),
+                          child: Text(
+                            "$address",
+                            textAlign: TextAlign.center,
+                            style: new TextStyle(fontSize: 25),
+                          )),
+                      Container(
+                          margin: const EdgeInsets.only(top: 10.0),
+                          child: Text(
+                            "$notesOrItems",
+                            textAlign: TextAlign.center,
+                            style: new TextStyle(fontSize: 25),
+                          )),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 10.0),
+                            child: SizedBox(
+                                height: 90,
+                                width: 200,
+                                child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20.0),
                                           side:
-                                              BorderSide(color: primaryColor)),
-                                      primary: primaryColor),
-                                  onPressed: () async {
-                                    if (order["address"] != "") {
-                                      MapsSheet.show(
-                                        context: context,
-                                        onMapTap: (map) {
-                                          map.showMarker(
-                                            coords: Coords(0, 0),
-                                            title: order["address"],
-                                            extraParams: {
-                                              'q': order["address"]
-                                            },
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      MapsSheet.show(
-                                        context: context,
-                                        onMapTap: (map) {
-                                          map.showMarker(
-                                            coords: Coords(
-                                                double.parse(order["y"]),
-                                                double.parse(order["x"])),
-                                            title: address,
-                                          );
-                                        },
-                                      );
-                                    }
+                                              BorderSide(color: Colors.green)),
+                                      primary: Colors.green),
+                                  onPressed: () {
+                                    status = "ONLINE";
+                                    userFunctions().finishOrder();
+                                    runApp(loggedInPage());
                                   },
-                                  child: Text('Отвори навигация',
+                                  child: Text('Приключи поръчка',
                                       textAlign: TextAlign.center,
                                       style: new TextStyle(fontSize: 25)),
-                                ))),
-                  ),
-                ],
-              ),
-            ],
-          )),
+                                )),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 10.0),
+                            child: SizedBox(
+                                height: 90,
+                                width: 200,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          side: BorderSide(color: Colors.red)),
+                                      primary: Colors.red),
+                                  onPressed: () {
+                                    status = "BUSY";
+                                    userFunctions().rejectOrderAfterAccept();
+                                    runApp(loggedInPage());
+                                  },
+                                  child: Text('Откажи поръчка',
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(fontSize: 25)),
+                                )),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 10.0),
+                            child: SizedBox(
+                                height: 90,
+                                width: 200,
+                                child: Builder(
+                                    builder: (context) => ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.0),
+                                                  side: BorderSide(
+                                                      color: primaryColor)),
+                                              primary: primaryColor),
+                                          onPressed: () async {
+                                            if (order["address"] != "") {
+                                              MapsSheet.show(
+                                                context: context,
+                                                onMapTap: (map) {
+                                                  map.showMarker(
+                                                    coords: Coords(0, 0),
+                                                    title: order["address"],
+                                                    extraParams: {
+                                                      'q': order["address"]
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            } else {
+                                              MapsSheet.show(
+                                                context: context,
+                                                onMapTap: (map) {
+                                                  map.showMarker(
+                                                    coords: Coords(
+                                                        double.parse(
+                                                            order["y"]),
+                                                        double.parse(
+                                                            order["x"])),
+                                                    title: address,
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                          child: Text('Отвори навигация',
+                                              textAlign: TextAlign.center,
+                                              style:
+                                                  new TextStyle(fontSize: 25)),
+                                        ))),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )))),
     );
   }
 }

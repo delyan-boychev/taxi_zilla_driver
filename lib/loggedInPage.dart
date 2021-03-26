@@ -74,12 +74,12 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
                       .getAdresssByCoords(order["x"], order["y"]);
                 citySupported = await userFunctions().checkCityIsSupported();
                 if (citySupported) {
-                  if (order["items"] == "") {
+                  if (order["items"] == null) {
                     orderText =
-                        "ПОРЪЧКА НА ТАКСИ Имате нова поръчка до $address!";
+                        "ПОРЪЧКА НА ТАКСИ \nИмате нова поръчка до $address! \nБележки: ${order["notes"]}";
                   } else {
                     orderText =
-                        "ПОРЪЧКА ЗА ПАЗАРУВАНЕ Имате нова поръчка за пазаруване до $address! Указания за пазаруване: ${order["items"]}";
+                        "ПОРЪЧКА ЗА ПАЗАРУВАНЕ \nИмате нова поръчка за пазаруване до $address! \nУказания за пазаруване: ${order["items"]}";
                   }
                   runApp(newOrderPage());
                   isChecking = false;
@@ -149,7 +149,11 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
               ],
             ),
           ),
-          body: Column(children: <Widget>[
+          body: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                  width: double.infinity,
+                  child:Column(children: <Widget>[
             Container(
                 margin: const EdgeInsets.only(top: 40),
                 alignment: Alignment.topCenter,
@@ -217,7 +221,7 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
                 ),
               ],
             )
-          ])),
+          ])))),
     );
   }
 }

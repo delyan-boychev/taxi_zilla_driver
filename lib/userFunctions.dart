@@ -40,14 +40,15 @@ class userFunctions {
         RegExp regex =
             new RegExp(r"[*]*[,] ((?:гр.|с.) [а-яА-Я ]*), ([а-яА-Я ]*)");
         var matches = regex.allMatches(order["address"].toString());
-        for (var el in json) {
+        List<dynamic> cities = json;
+        cities.forEach((el) {
           for (Match match in matches) {
             if (el["city"].toString().contains(match.group(1).trim()) &&
                 el["region"].toString().contains(match.group(2).trim())) {
               exists = true;
             }
           }
-        }
+        });
       } else {
         final resp2 = await Session().get(
             "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?location=" +
@@ -56,7 +57,8 @@ class userFunctions {
                 order["y"].toString() +
                 "&f=pjson");
         final json2 = jsonDecode(resp2);
-        for (var el in json) {
+        List<dynamic> cities = json;
+        cities.forEach((el) {
           if (el["city"]
                   .toString()
                   .contains(json2["address"]["City"].toString()) &&
@@ -65,7 +67,7 @@ class userFunctions {
                   .contains(json2["address"]["Region"].toString())) {
             exists = true;
           }
-        }
+        });
       }
     }
     if (!exists) {

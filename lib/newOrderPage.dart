@@ -110,94 +110,104 @@ class newOrderState extends State<newOrderPage> {
               ],
             ),
           ),
-          body: Column(
-            children: [
-              Container(
-                  margin: const EdgeInsets.only(top: 10.0),
-                  child: Text(
-                    "Имате нова поръчка до $address! Имате 20 секунди, за да я приемете!",
-                    textAlign: TextAlign.center,
-                    style: new TextStyle(fontSize: 25),
-                  )),
-              Container(
-                  margin: const EdgeInsets.only(top: 5.0),
-                  child: Text(
-                    "Белжки: ${order["notes"]}",
-                    textAlign: TextAlign.center,
-                    style: new TextStyle(fontSize: 25),
-                  )),
-              Container(
-                  margin: const EdgeInsets.only(top: 40.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          body: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                  width: double.infinity,
+                  child: Column(
                     children: [
-                      SizedBox(
-                          height: 90,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    side: BorderSide(color: Colors.green)),
-                                primary: Colors.green),
-                            onPressed: () {
-                              status = "BUSY";
-                              userFunctions().acceptOrder();
-                              a = -1;
-                              if (order["address"] == "") {
-                                address =
-                                    "Моля включете навигацията, защото адресът може да не е точен!!!";
-                              }
-                              runApp(orderConfirmedPage());
-                            },
-                            child: Text('Приемане',
-                                textAlign: TextAlign.center,
-                                style: new TextStyle(fontSize: 25)),
+                      Container(
+                          margin: const EdgeInsets.only(top: 10.0),
+                          child: Text(
+                            "$orderText",
+                            textAlign: TextAlign.center,
+                            style: new TextStyle(fontSize: 25),
                           )),
-                      SizedBox(
-                          height: 90,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    side: BorderSide(color: Colors.red)),
-                                primary: Colors.red),
-                            onPressed: () {
-                              userFunctions().rejectOrder();
-                              a = -1;
-                              runApp(loggedInPage());
-                            },
-                            child: Text('Отказване',
-                                textAlign: TextAlign.center,
-                                style: new TextStyle(fontSize: 25)),
+                      Container(
+                          margin: const EdgeInsets.only(top: 40.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                  height: 90,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            side: BorderSide(
+                                                color: Colors.green)),
+                                        primary: Colors.green),
+                                    onPressed: () {
+                                      status = "BUSY";
+                                      userFunctions().acceptOrder();
+                                      a = -1;
+                                      if (order["address"] == "") {
+                                        address =
+                                            "Адрес: Моля включете навигацията, защото адресът може да не е точен!!!";
+                                      } else {
+                                        address = "Адрес: $address";
+                                      }
+                                      if (order["items"] != null) {
+                                        notesOrItems =
+                                            "Указания за пазаруване: ${order["items"]}";
+                                      } else {
+                                        notesOrItems =
+                                            "Бележки: ${order["notes"]}";
+                                      }
+                                      runApp(orderConfirmedPage());
+                                    },
+                                    child: Text('Приемане',
+                                        textAlign: TextAlign.center,
+                                        style: new TextStyle(fontSize: 25)),
+                                  )),
+                              SizedBox(
+                                  height: 90,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                            side:
+                                                BorderSide(color: Colors.red)),
+                                        primary: Colors.red),
+                                    onPressed: () {
+                                      userFunctions().rejectOrder();
+                                      a = -1;
+                                      runApp(loggedInPage());
+                                    },
+                                    child: Text('Отказване',
+                                        textAlign: TextAlign.center,
+                                        style: new TextStyle(fontSize: 25)),
+                                  )),
+                            ],
                           )),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                              margin: const EdgeInsets.only(top: 30.0),
+                              child: CircularCountDownTimer(
+                                duration: 20,
+                                controller: _controller,
+                                width: 120,
+                                height: 120,
+                                fillColor: Colors.white,
+                                ringColor: primaryColor,
+                                backgroundColor: null,
+                                strokeWidth: 5.0,
+                                strokeCap: StrokeCap.butt,
+                                textStyle: TextStyle(
+                                    fontSize: 30,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                                isReverse: true,
+                                isTimerTextShown: true,
+                              )),
+                        ],
+                      )
                     ],
-                  )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                      margin: const EdgeInsets.only(top: 30.0),
-                      child: CircularCountDownTimer(
-                        duration: 20,
-                        controller: _controller,
-                        width: 120,
-                        height: 120,
-                        fillColor: Colors.white,
-                        ringColor: primaryColor,
-                        backgroundColor: null,
-                        strokeWidth: 5.0,
-                        strokeCap: StrokeCap.butt,
-                        textStyle: TextStyle(
-                            fontSize: 30,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
-                        isReverse: true,
-                        isTimerTextShown: true,
-                      )),
-                ],
-              )
-            ],
-          )),
+                  )))),
     );
   }
 }

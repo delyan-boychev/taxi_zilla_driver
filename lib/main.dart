@@ -17,6 +17,7 @@ String email;
 String address;
 String status = "ONLINE";
 bool isChecking = false;
+String notesOrItems;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 const AndroidInitializationSettings initializationSettingsAndroid =
