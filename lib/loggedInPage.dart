@@ -19,7 +19,11 @@ class loggedInPage extends StatefulWidget {
 // ignore: camel_case_types
 class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
   var statusButttonText = "На линия";
-  var statusButtonColor = Colors.green;
+  var statusButtonColor = generateMaterialColor(Color.fromRGBO(14, 204, 14, 1));
+  Icon iconButton = Icon(
+    Icons.event_available_rounded,
+    size: 50,
+  );
   Location location = new Location();
   bool _serviceEnabled;
   var citySupported;
@@ -105,11 +109,20 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     if (status == "ONLINE") {
       setState(() {
-        statusButtonColor = Colors.green;
+        iconButton = Icon(
+          Icons.event_available_rounded,
+          size: 50,
+        );
+        statusButtonColor =
+            generateMaterialColor(Color.fromRGBO(14, 204, 14, 1));
         statusButttonText = "На линия";
       });
     } else {
       setState(() {
+        iconButton = Icon(
+          Icons.event_busy_rounded,
+          size: 50,
+        );
         statusButtonColor = Colors.red;
         statusButttonText = "Зает";
       });
@@ -159,38 +172,53 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
                         alignment: Alignment.topCenter,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                              side: BorderSide(width: 5.0, color: Colors.black),
                               shape: CircleBorder(),
                               primary: statusButtonColor),
                           onPressed: () {
                             if (status == "ONLINE") {
                               status = "BUSY";
                               setState(() {
+                                iconButton = Icon(
+                                  Icons.event_busy_rounded,
+                                  size: 50,
+                                );
                                 statusButtonColor = Colors.red;
                                 statusButttonText = "Зает";
                               });
                             } else {
                               status = "ONLINE";
                               setState(() {
-                                statusButtonColor = Colors.green;
+                                iconButton = Icon(
+                                  Icons.event_available_rounded,
+                                  size: 50,
+                                );
+                                statusButtonColor = generateMaterialColor(
+                                    Color.fromRGBO(14, 204, 14, 1));
                                 statusButttonText = "На линия";
                               });
                             }
                           },
                           child: Container(
-                            width: 300,
-                            height: 300,
+                            width: 320,
+                            height: 320,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(shape: BoxShape.circle),
-                            child: Text('$statusButttonText',
-                                textAlign: TextAlign.center,
-                                style: new TextStyle(fontSize: 50)),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  iconButton,
+                                  Text('$statusButttonText',
+                                      textAlign: TextAlign.center,
+                                      style: new TextStyle(fontSize: 45))
+                                ]),
                           ),
                         )),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          margin: const EdgeInsets.only(top: 10.0),
+                          margin: const EdgeInsets.only(top: 20.0),
                           child: SizedBox(
                               height: 90,
                               width: 200,
@@ -201,7 +229,8 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
                                                 borderRadius:
                                                     BorderRadius.circular(20.0),
                                                 side: BorderSide(
-                                                    color: primaryColor)),
+                                                    width: 5,
+                                                    color: Colors.black)),
                                             primary: primaryColor),
                                         onPressed: () async {
                                           showDialog(

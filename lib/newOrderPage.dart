@@ -136,8 +136,9 @@ class newOrderState extends State<newOrderPage> {
                                             borderRadius:
                                                 BorderRadius.circular(20.0),
                                             side: BorderSide(
-                                                color: Colors.green)),
-                                        primary: Colors.green),
+                                                width: 5, color: Colors.black)),
+                                        primary: generateMaterialColor(
+                                            Color.fromRGBO(14, 204, 14, 1))),
                                     onPressed: () {
                                       status = "BUSY";
                                       userFunctions().acceptOrder();
@@ -170,8 +171,8 @@ class newOrderState extends State<newOrderPage> {
                                         shape: RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(20.0),
-                                            side:
-                                                BorderSide(color: Colors.red)),
+                                            side: BorderSide(
+                                                width: 5, color: Colors.black)),
                                         primary: Colors.red),
                                     onPressed: () {
                                       userFunctions().rejectOrder();

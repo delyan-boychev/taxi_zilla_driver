@@ -133,7 +133,7 @@ class orderConfirmedState extends State<orderConfirmedPage> {
                       Container(
                         margin: const EdgeInsets.only(top: 10.0),
                         child: ElevatedButton(
-                          onPressed: ()async {
+                          onPressed: () async {
                             await launch("tel:${order["phoneNumber"]}");
                           },
                           child: Text("Звънни на клиента",
@@ -153,9 +153,10 @@ class orderConfirmedState extends State<orderConfirmedPage> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20.0),
-                                          side:
-                                              BorderSide(color: Colors.green)),
-                                      primary: Colors.green),
+                                          side: BorderSide(
+                                              width: 5, color: Colors.black)),
+                                      primary: generateMaterialColor(
+                                          Color.fromRGBO(14, 204, 14, 1))),
                                   onPressed: () {
                                     status = "ONLINE";
                                     userFunctions().finishOrder();
@@ -181,7 +182,8 @@ class orderConfirmedState extends State<orderConfirmedPage> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20.0),
-                                          side: BorderSide(color: Colors.red)),
+                                          side: BorderSide(
+                                              width: 5, color: Colors.black)),
                                       primary: Colors.red),
                                   onPressed: () {
                                     status = "BUSY";
@@ -210,8 +212,8 @@ class orderConfirmedState extends State<orderConfirmedPage> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           20.0),
-                                                  side: BorderSide(
-                                                      color: primaryColor)),
+                                                  side: BorderSide( width:5,
+                                                      color: Colors.black)),
                                               primary: primaryColor),
                                           onPressed: () async {
                                             if (order["address"] != "") {
@@ -233,10 +235,7 @@ class orderConfirmedState extends State<orderConfirmedPage> {
                                                 onMapTap: (map) {
                                                   map.showMarker(
                                                     coords: Coords(
-                                                        double.parse(
-                                                            order["y"]),
-                                                        double.parse(
-                                                            order["x"])),
+                                                        order["y"], order["x"]),
                                                     title: address,
                                                   );
                                                 },
