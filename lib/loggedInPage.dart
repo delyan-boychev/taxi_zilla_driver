@@ -70,11 +70,11 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
                 if (order["address"] != "")
                   address = order["address"];
                 else
-                  address = await userFunctions()
-                      .getAdresssByCoords(order["x"], order["y"]);
+                  address = await userFunctions().getAdresssByCoords(
+                      order["x"].toString(), order["y"].toString());
                 citySupported = await userFunctions().checkCityIsSupported();
                 if (citySupported) {
-                  if (order["items"] == null) {
+                  if (order["items"] == "" || order["items"] == null) {
                     orderText =
                         "ПОРЪЧКА НА ТАКСИ \nИмате нова поръчка до $address! \nБележки: ${order["notes"]}";
                   } else {
@@ -153,75 +153,78 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
               scrollDirection: Axis.vertical,
               child: Container(
                   width: double.infinity,
-                  child:Column(children: <Widget>[
-            Container(
-                margin: const EdgeInsets.only(top: 40),
-                alignment: Alignment.topCenter,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(), primary: statusButtonColor),
-                  onPressed: () {
-                    if (status == "ONLINE") {
-                      status = "BUSY";
-                      setState(() {
-                        statusButtonColor = Colors.red;
-                        statusButttonText = "Зает";
-                      });
-                    } else {
-                      status = "ONLINE";
-                      setState(() {
-                        statusButtonColor = Colors.green;
-                        statusButttonText = "На линия";
-                      });
-                    }
-                  },
-                  child: Container(
-                    width: 300,
-                    height: 300,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(shape: BoxShape.circle),
-                    child: Text('$statusButttonText',
-                        textAlign: TextAlign.center,
-                        style: new TextStyle(fontSize: 50)),
-                  ),
-                )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 10.0),
-                  child: SizedBox(
-                      height: 90,
-                      width: 200,
-                      child: Builder(
-                          builder: (context) => ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        side: BorderSide(color: primaryColor)),
-                                    primary: primaryColor),
-                                onPressed: () async {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return new SimpleDialog(
-                                          title:
-                                              new Text("QR код за taxiZilla"),
-                                          children: [
-                                            Image.asset('assets/img/qrcode.png')
-                                          ],
-                                        );
-                                      });
-                                },
-                                child: Text('Електронна визитка',
-                                    textAlign: TextAlign.center,
-                                    style: new TextStyle(fontSize: 25)),
-                              ))),
-                ),
-              ],
-            )
-          ])))),
+                  child: Column(children: <Widget>[
+                    Container(
+                        margin: const EdgeInsets.only(top: 40),
+                        alignment: Alignment.topCenter,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: CircleBorder(),
+                              primary: statusButtonColor),
+                          onPressed: () {
+                            if (status == "ONLINE") {
+                              status = "BUSY";
+                              setState(() {
+                                statusButtonColor = Colors.red;
+                                statusButttonText = "Зает";
+                              });
+                            } else {
+                              status = "ONLINE";
+                              setState(() {
+                                statusButtonColor = Colors.green;
+                                statusButttonText = "На линия";
+                              });
+                            }
+                          },
+                          child: Container(
+                            width: 300,
+                            height: 300,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(shape: BoxShape.circle),
+                            child: Text('$statusButttonText',
+                                textAlign: TextAlign.center,
+                                style: new TextStyle(fontSize: 50)),
+                          ),
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 10.0),
+                          child: SizedBox(
+                              height: 90,
+                              width: 200,
+                              child: Builder(
+                                  builder: (context) => ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                                side: BorderSide(
+                                                    color: primaryColor)),
+                                            primary: primaryColor),
+                                        onPressed: () async {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return new SimpleDialog(
+                                                  title: new Text(
+                                                      "QR код за taxiZilla"),
+                                                  children: [
+                                                    Image.asset(
+                                                        'assets/img/qrcode.png')
+                                                  ],
+                                                );
+                                              });
+                                        },
+                                        child: Text('Електронна визитка',
+                                            textAlign: TextAlign.center,
+                                            style: new TextStyle(fontSize: 25)),
+                                      ))),
+                        ),
+                      ],
+                    )
+                  ])))),
     );
   }
 }

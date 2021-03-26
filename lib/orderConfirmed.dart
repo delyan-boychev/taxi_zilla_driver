@@ -6,6 +6,7 @@ import 'package:location/location.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:taxi_zilla_driver/loggedInPage.dart';
 import 'package:taxi_zilla_driver/maps_sheet.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'userFunctions.dart';
 import 'main.dart';
 
@@ -129,6 +130,16 @@ class orderConfirmedState extends State<orderConfirmedPage> {
                             textAlign: TextAlign.center,
                             style: new TextStyle(fontSize: 25),
                           )),
+                      Container(
+                        margin: const EdgeInsets.only(top: 10.0),
+                        child: ElevatedButton(
+                          onPressed: ()async {
+                            await launch("tel:${order["phoneNumber"]}");
+                          },
+                          child: Text("Звънни на клиента",
+                              style: TextStyle(fontSize: 25)),
+                        ),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [

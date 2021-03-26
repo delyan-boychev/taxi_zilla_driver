@@ -142,18 +142,20 @@ class newOrderState extends State<newOrderPage> {
                                       status = "BUSY";
                                       userFunctions().acceptOrder();
                                       a = -1;
-                                      if (order["address"] == "") {
+                                      if (order["address"] == "" ||
+                                          order["address"] == null) {
                                         address =
                                             "Адрес: Моля включете навигацията, защото адресът може да не е точен!!!";
                                       } else {
                                         address = "Адрес: $address";
                                       }
-                                      if (order["items"] != null) {
-                                        notesOrItems =
-                                            "Указания за пазаруване: ${order["items"]}";
-                                      } else {
+                                      if (order["items"] == "" ||
+                                          order["items"] == null) {
                                         notesOrItems =
                                             "Бележки: ${order["notes"]}";
+                                      } else {
+                                        notesOrItems =
+                                            "Указания за пазаруване: ${order["items"]}";
                                       }
                                       runApp(orderConfirmedPage());
                                     },
