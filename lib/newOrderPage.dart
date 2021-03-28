@@ -67,16 +67,19 @@ class newOrderState extends State<newOrderPage> {
     ]);
     startPlayerAndPushNotification();
     Timer.periodic(Duration(seconds: 1), (timer) async {
+      print(a);
       if (a == 0) {
         userFunctions().rejectOrder();
         timer.cancel();
         stopPlayer();
+        isOrderDelivered = false;
         runApp(loggedInPage());
       } else if (a == -1) {
+        isOrderDelivered = false;
         timer.cancel();
         stopPlayer();
       } else
-        setState(() => a--);
+        a--;
     });
   }
 

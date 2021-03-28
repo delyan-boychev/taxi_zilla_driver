@@ -23,6 +23,7 @@ String address = "";
 String status = "ONLINE";
 bool isChecking = false;
 bool loggedIn = false;
+bool isOrderDelivered = false;
 String notesOrItems = "";
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -63,6 +64,7 @@ Map<String, String> headers = {};
 void requestPermissions() async {
   await [
     Permission.location,
+    Permission.locationAlways,
     Permission.storage,
   ].request();
 }
@@ -78,50 +80,45 @@ Future<dynamic> myUtilsHandler(MethodCall methodCall) async {
 }
 
 void checkForOrdersAndSetLocation() async {
-  if (!isChecking) {
-    isChecking = true;
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      isChecking = false;
-    } else {
-      locData = await location.getLocation();
-      o = await userFunctions().checkForOrders(locData.longitude.toString(),
-          locData.latitude.toString(), status.toString());
-      if (o != null) {
-        if (o.contains("address") && o.contains("x")) {
-          if (status == "BUSY") {
-            userFunctions().rejectOrder();
+  _serviceEnabled = await location.serviceEnabled();
+  if (!_serviceEnabled) {
+    _serviceEnabled = await location.requestService();
+  } else {
+    locData = await location.getLocation();
+    o = await userFunctions().checkForOrders(locData.longitude.toString(),
+        locData.latitude.toString(), status.toString());
+    if (o != null && !isOrderDelivered) {
+      if (o.contains("address") && o.contains("x")) {
+        if (status == "BUSY") {
+          userFunctions().rejectOrder();
+        } else {
+          order = jsonDecode(o);
+          status = "BUSY";
+          await userFunctions().checkForOrders(locData.longitude.toString(),
+              locData.latitude.toString(), status.toString());
+          if (order["address"] != "")
+            address = order["address"];
+          else
+            address = await userFunctions().getAdresssByCoords(
+                order["x"].toString(), order["y"].toString());
+          citySupported = await userFunctions().checkCityIsSupported();
+          if (citySupported) {
+            if (order["items"] == "" || order["items"] == null) {
+              orderText =
+                  "ПОРЪЧКА НА ТАКСИ \nИмате нова поръчка до $address! \nБележки: ${order["notes"]}";
+            } else {
+              orderText =
+                  "ПОРЪЧКА ЗА ПАЗАРУВАНЕ \nИмате нова поръчка за пазаруване до $address! \nУказания за пазаруване: ${order["items"]}";
+            }
+            isOrderDelivered = true;
+            runApp(newOrderPage());
           } else {
-            order = jsonDecode(o);
-            status = "BUSY";
+            status = "ONLINE";
             await userFunctions().checkForOrders(locData.longitude.toString(),
                 locData.latitude.toString(), status.toString());
-            if (order["address"] != "")
-              address = order["address"];
-            else
-              address = await userFunctions().getAdresssByCoords(
-                  order["x"].toString(), order["y"].toString());
-            citySupported = await userFunctions().checkCityIsSupported();
-            if (citySupported) {
-              if (order["items"] == "" || order["items"] == null) {
-                orderText =
-                    "ПОРЪЧКА НА ТАКСИ \nИмате нова поръчка до $address! \nБележки: ${order["notes"]}";
-              } else {
-                orderText =
-                    "ПОРЪЧКА ЗА ПАЗАРУВАНЕ \nИмате нова поръчка за пазаруване до $address! \nУказания за пазаруване: ${order["items"]}";
-              }
-              runApp(newOrderPage());
-              isChecking = false;
-            } else {
-              status = "ONLINE";
-              await userFunctions().checkForOrders(locData.longitude.toString(),
-                  locData.latitude.toString(), status.toString());
-            }
           }
         }
       }
-      isChecking = false;
     }
   }
 }
