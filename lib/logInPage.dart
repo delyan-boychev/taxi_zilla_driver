@@ -135,6 +135,7 @@ class loginFormState extends State<loginForm> {
                                     passwordController.text)
                                 .then((isLoggedIn) {
                               if (isLoggedIn == true) {
+                                loggedIn = true;
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text(
                                         "Успешно влязохте в профила си! Моля изчакайте...")));

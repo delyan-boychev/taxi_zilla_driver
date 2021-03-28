@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
+import 'newOrderPage.dart';
 import 'userFunctions.dart';
 import 'logInPage.dart';
 import 'dart:io';
@@ -17,6 +22,7 @@ String email = "";
 String address = "";
 String status = "ONLINE";
 bool isChecking = false;
+bool loggedIn = false;
 String notesOrItems = "";
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -26,6 +32,7 @@ final InitializationSettings initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid);
 MaterialColor primary = generateMaterialColor(Color.fromRGBO(255, 237, 0, 1));
 Color primaryColor = Color.fromRGBO(255, 237, 0, 1);
+MethodChannel channel = new MethodChannel("taxiZillaMethodChannel");
 
 //Funkciq za generirane na MaterialColor ot daden Color
 MaterialColor generateMaterialColor(Color color) {
@@ -43,6 +50,12 @@ MaterialColor generateMaterialColor(Color color) {
   });
 }
 
+Location location = new Location();
+bool _serviceEnabled;
+var citySupported;
+var locData;
+var o;
+
 //Heduri nujni pri post i get zaqvki
 Map<String, String> headers = {};
 
@@ -54,9 +67,69 @@ void requestPermissions() async {
   ].request();
 }
 
+Future<dynamic> myUtilsHandler(MethodCall methodCall) async {
+  switch (methodCall.method) {
+    case "checkForOrdersAndSetLocation":
+      if (loggedIn) {
+        checkForOrdersAndSetLocation();
+      }
+      break;
+  }
+}
+
+void checkForOrdersAndSetLocation() async {
+  if (!isChecking) {
+    isChecking = true;
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      isChecking = false;
+    } else {
+      locData = await location.getLocation();
+      o = await userFunctions().checkForOrders(locData.longitude.toString(),
+          locData.latitude.toString(), status.toString());
+      if (o != null) {
+        if (o.contains("address") && o.contains("x")) {
+          if (status == "BUSY") {
+            userFunctions().rejectOrder();
+          } else {
+            order = jsonDecode(o);
+            status = "BUSY";
+            await userFunctions().checkForOrders(locData.longitude.toString(),
+                locData.latitude.toString(), status.toString());
+            if (order["address"] != "")
+              address = order["address"];
+            else
+              address = await userFunctions().getAdresssByCoords(
+                  order["x"].toString(), order["y"].toString());
+            citySupported = await userFunctions().checkCityIsSupported();
+            if (citySupported) {
+              if (order["items"] == "" || order["items"] == null) {
+                orderText =
+                    "ПОРЪЧКА НА ТАКСИ \nИмате нова поръчка до $address! \nБележки: ${order["notes"]}";
+              } else {
+                orderText =
+                    "ПОРЪЧКА ЗА ПАЗАРУВАНЕ \nИмате нова поръчка за пазаруване до $address! \nУказания за пазаруване: ${order["items"]}";
+              }
+              runApp(newOrderPage());
+              isChecking = false;
+            } else {
+              status = "ONLINE";
+              await userFunctions().checkForOrders(locData.longitude.toString(),
+                  locData.latitude.toString(), status.toString());
+            }
+          }
+        }
+      }
+      isChecking = false;
+    }
+  }
+}
+
 //Driver code
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  channel.setMethodCallHandler(myUtilsHandler);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   requestPermissions();
   final dir = await getExternalStorageDirectory();
@@ -66,6 +139,7 @@ void main() async {
     if (isLoggedIn) {
       name = await userFunctions().getNameTaxiDriver();
       runApp(loggedInPage());
+      loggedIn = true;
     } else {
       runApp(loginPage());
     }

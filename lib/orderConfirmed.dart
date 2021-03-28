@@ -35,7 +35,6 @@ class orderConfirmedState extends State<orderConfirmedPage> {
   bool _serviceEnabled;
   bool isChecking2 = false;
   var locData;
-
   @override
   void initState() {
     super.initState();
@@ -43,21 +42,6 @@ class orderConfirmedState extends State<orderConfirmedPage> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    Timer.periodic(Duration(seconds: 3), (timer) async {
-      if (!isChecking2) {
-        isChecking2 = true;
-        _serviceEnabled = await location.serviceEnabled();
-        if (!_serviceEnabled) {
-          _serviceEnabled = await location.requestService();
-          isChecking2 = false;
-        } else {
-          locData = await location.getLocation();
-          userFunctions().checkForOrders(locData.longitude.toString(),
-              locData.latitude.toString(), "BUSY");
-          isChecking2 = false;
-        }
-      }
-    });
   }
 
   //Osnova na stranicata
@@ -212,7 +196,8 @@ class orderConfirmedState extends State<orderConfirmedPage> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           20.0),
-                                                  side: BorderSide( width:5,
+                                                  side: BorderSide(
+                                                      width: 5,
                                                       color: Colors.black)),
                                               primary: primaryColor),
                                           onPressed: () async {
