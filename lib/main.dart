@@ -56,7 +56,7 @@ bool _serviceEnabled;
 var citySupported;
 var locData;
 var o;
-bool isSended = false;
+bool locationReqeustSended = false;
 
 //Heduri nujni pri post i get zaqvki
 Map<String, String> headers = {};
@@ -65,7 +65,7 @@ Map<String, String> headers = {};
 Future<dynamic> myUtilsHandler(MethodCall methodCall) async {
   switch (methodCall.method) {
     case "checkForOrdersAndSetLocation":
-      if (loggedIn) {
+      if (loggedIn && !locationReqeustSended) {
         checkForOrdersAndSetLocation();
       }
       break;
@@ -75,7 +75,9 @@ Future<dynamic> myUtilsHandler(MethodCall methodCall) async {
 void checkForOrdersAndSetLocation() async {
   _serviceEnabled = await location.serviceEnabled();
   if (!_serviceEnabled) {
+    locationReqeustSended = true;
     _serviceEnabled = await location.requestService();
+    locationReqeustSended = false;
   } else {
     locData = await location.getLocation();
     o = await userFunctions().checkForOrders(locData.longitude.toString(),

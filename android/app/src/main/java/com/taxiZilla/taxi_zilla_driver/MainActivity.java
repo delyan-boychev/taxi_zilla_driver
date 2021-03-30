@@ -25,6 +25,6 @@ public class MainActivity extends FlutterActivity {
                 chan.invokeMethod("checkForOrdersAndSetLocation",  savedInstnceState);
                 h.postDelayed(this, 4000);
             }
-        }, 4000); // 1 second delay (takes millis)
+        }, 4000);
     }
 }

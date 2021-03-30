@@ -83,7 +83,7 @@ class loginFormState extends State<loginForm> {
               child: ListBody(
                 children: <Widget>[
                   Text(
-                      'taxiZilla използва достъпa дo местоположението постоянно, за да може да приема проъчки дори във фонов режим или докато дисплеят на устройството е изключен. Съгласни ли сте?'),
+                      'taxiZilla използва достъпa дo местоположението постоянно, за да може да приема поръчки дори във фонов режим. Ние не съхраняваме история на местоположението Ви, а само последното изпратено. Използва се за изчисляване на разстояние между шофьора и клиента. Само клиентът може да Ви проследи, докато поръчката е със статус Приета. Съгласни ли сте?'),
                 ],
               ),
             ),
@@ -93,13 +93,6 @@ class loginFormState extends State<loginForm> {
                     Text('Съглсен съм', style: TextStyle(color: Colors.black)),
                 onPressed: () {
                   Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: Text('Не съм съгласен',
-                    style: TextStyle(color: Colors.black)),
-                onPressed: () {
-                  SystemNavigator.pop();
                 },
               ),
             ],
