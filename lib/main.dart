@@ -56,18 +56,11 @@ bool _serviceEnabled;
 var citySupported;
 var locData;
 var o;
+bool isSended = false;
 
 //Heduri nujni pri post i get zaqvki
 Map<String, String> headers = {};
-
 //Davene na dostup do mestoplojenie i storage
-void requestPermissions() async {
-  await [
-    Permission.location,
-    Permission.locationAlways,
-    Permission.storage,
-  ].request();
-}
 
 Future<dynamic> myUtilsHandler(MethodCall methodCall) async {
   switch (methodCall.method) {
@@ -128,7 +121,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   channel.setMethodCallHandler(myUtilsHandler);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  requestPermissions();
   final dir = await getExternalStorageDirectory();
   if (await File(dir.path + "/credentials").exists()) {
     final isLoggedIn = await userFunctions()

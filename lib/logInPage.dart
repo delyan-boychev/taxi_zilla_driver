@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'main.dart';
 import 'userFunctions.dart';
 import 'loggedInPage.dart';
@@ -10,8 +11,6 @@ class loginPage extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    requestPermissions();
-
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -73,6 +72,53 @@ class loginFormState extends State<loginForm> {
   //Osnova na stranicata
   @override
   Widget build(BuildContext context) {
+    Future<void> showMyDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Информация'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                      'taxiZilla използва достъпa дo местоположението постоянно, за да може да приема проъчки дори във фонов режим или докато дисплеят на устройството е изключен. Съгласни ли сте?'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child:
+                    Text('Съглсен съм', style: TextStyle(color: Colors.black)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: Text('Не съм съгласен',
+                    style: TextStyle(color: Colors.black)),
+                onPressed: () {
+                  SystemNavigator.pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    void requestPermissions() async {
+      if (!await Permission.locationAlways.isGranted) {
+        await showMyDialog();
+      }
+      await [
+        Permission.location,
+        Permission.storage,
+      ].request();
+    }
+
+    requestPermissions();
     //Formulqr za login
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
