@@ -107,6 +107,7 @@ class loginFormState extends State<loginForm> {
       }
       await [
         Permission.location,
+        Permission.locationAlways,
         Permission.storage,
       ].request();
     }
