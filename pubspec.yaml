@@ -28,7 +28,6 @@ dependencies:
   flutter:
     sdk: flutter
   location: 
-  geolocator: 
   encrypt:
   circular_countdown_timer: 
   audioplayers: 

@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:location/location.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:taxi_zilla_driver/loggedInPage.dart';
 import 'package:taxi_zilla_driver/maps_sheet.dart';
@@ -31,10 +28,6 @@ class orderConfirmedState extends State<orderConfirmedPage> {
     super.dispose();
   }
 
-  Location location = new Location();
-  bool _serviceEnabled;
-  bool isChecking2 = false;
-  var locData;
   @override
   void initState() {
     super.initState();
