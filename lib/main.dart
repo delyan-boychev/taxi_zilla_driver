@@ -82,35 +82,36 @@ void checkForOrdersAndSetLocation() async {
     locData = await location.getLocation();
     o = await userFunctions().checkForOrders(locData.longitude.toString(),
         locData.latitude.toString(), status.toString());
-    if (o != null && !isOrderDelivered) {
-      if (o.contains("address") && o.contains("x")) {
-        if (status == "BUSY") {
-          userFunctions().rejectOrder();
-        } else {
-          order = jsonDecode(o);
-          status = "BUSY";
-          await userFunctions().checkForOrders(locData.longitude.toString(),
-              locData.latitude.toString(), status.toString());
-          if (order["address"] != "")
-            address = order["address"];
-          else
-            address = await userFunctions().getAdresssByCoords(
-                order["x"].toString(), order["y"].toString());
-          citySupported = await userFunctions().checkCityIsSupported();
-          if (citySupported) {
-            if (order["items"] == "" || order["items"] == null) {
-              orderText =
-                  "ПОРЪЧКА НА ТАКСИ \nИмате нова поръчка до $address! \nБележки: ${order["notes"]}";
-            } else {
-              orderText =
-                  "ПОРЪЧКА ЗА ПАЗАРУВАНЕ \nИмате нова поръчка за пазаруване до $address! \nУказания за пазаруване: ${order["items"]}";
-            }
-            isOrderDelivered = true;
-            runApp(newOrderPage());
+    if (!isOrderDelivered) {
+      if (o != null) {
+        if (o.contains("address") && o.contains("x")) {
+          if (status == "BUSY") {
+            userFunctions().rejectOrder();
           } else {
-            status = "ONLINE";
-            await userFunctions().checkForOrders(locData.longitude.toString(),
+            isOrderDelivered = true;
+            order = jsonDecode(o);
+            status = "BUSY";
+            userFunctions().checkForOrders(locData.longitude.toString(),
                 locData.latitude.toString(), status.toString());
+            if (order["address"] != "")
+              address = order["address"];
+            else
+              address = await userFunctions().getAdresssByCoords(
+                  order["x"].toString(), order["y"].toString());
+            citySupported = await userFunctions().checkCityIsSupported();
+            if (citySupported) {
+              if (order["items"] == "" || order["items"] == null) {
+                orderText =
+                    "ПОРЪЧКА НА ТАКСИ \nИмате нова поръчка до $address! \nБележки: ${order["notes"]}";
+              } else {
+                orderText =
+                    "ПОРЪЧКА ЗА ПАЗАРУВАНЕ \nИмате нова поръчка за пазаруване до $address! \nУказания за пазаруване: ${order["items"]}";
+              }
+              runApp(newOrderPage());
+            } else {
+              status = "ONLINE";
+              isOrderDelivered = false;
+            }
           }
         }
       }

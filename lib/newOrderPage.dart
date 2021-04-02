@@ -146,6 +146,7 @@ class newOrderState extends State<newOrderPage> {
                                       status = "BUSY";
                                       userFunctions().acceptOrder();
                                       a = -1;
+                                      isOrderDelivered = false;
                                       if (order["address"] == "" ||
                                           order["address"] == null) {
                                         address =
@@ -180,6 +181,7 @@ class newOrderState extends State<newOrderPage> {
                                     onPressed: () {
                                       userFunctions().rejectOrder();
                                       a = -1;
+                                      isOrderDelivered = false;
                                       runApp(loggedInPage());
                                     },
                                     child: Text('Отказване',
