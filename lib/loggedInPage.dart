@@ -1,12 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taxi_zilla_driver/logInPage.dart';
 import 'main.dart';
-import 'dart:async';
 import 'userFunctions.dart';
-import 'newOrderPage.dart';
-import 'package:location/location.dart';
 
 //Stranica kogato shofyoryt e vlqzul
 // ignore: camel_case_types
