@@ -12,7 +12,8 @@
         android:icon="@mipmap/launcher_icon">
         <service
     android:name=".CloseService"
-    android:stopWithTask="false"/>
+    android:stopWithTask="false"
+    android:foregroundServiceType="location"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -1,4 +1,4 @@
-import 'package:taxi_zilla_driver/userFunctions.dart';
+import 'package:taxi_zilla_driver/userOperations.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'main.dart';
@@ -61,14 +61,15 @@ class Session {
   //Funkciq za get zaqvka
   Future<String> get(String url) async {
     try {
-      http.Response response = await http.get(url, headers: headers);
+      http.Response response = await http.get(Uri.parse(url), headers: headers);
       if (response.body == "401") {
         headers = {};
         cookies = {};
         final dir = await getExternalStorageDirectory();
-        userFunctions().logInTaxiDriver(
+        userOperations().logInTaxiDriver(
             await File(dir.path + "/credentials").readAsString());
-        http.Response response = await http.get(url, headers: headers);
+        http.Response response =
+            await http.get(Uri.parse(url), headers: headers);
         return response.body;
       } else {
         _updateCookie(response);
@@ -83,15 +84,15 @@ class Session {
   Future<String> post(String url, dynamic data) async {
     try {
       http.Response response =
-          await http.post(url, body: data, headers: headers);
+          await http.post(Uri.parse(url), body: data, headers: headers);
       if (response.body == "401") {
         headers = {};
         cookies = {};
         final dir = await getExternalStorageDirectory();
-        userFunctions().logInTaxiDriver(
+        userOperations().logInTaxiDriver(
             await File(dir.path + "/credentials").readAsString());
         http.Response response =
-            await http.post(url, body: data, headers: headers);
+            await http.post(Uri.parse(url), body: data, headers: headers);
         _updateCookie(response);
         return response.body;
       } else {

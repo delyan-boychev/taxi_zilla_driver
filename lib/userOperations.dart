@@ -9,8 +9,11 @@ import 'Session.dart';
 
 //Class userFunctions
 // ignore: camel_case_types
-class userFunctions {
+class userOperations {
   //Deklarirane na promenlivi
+  final _chars =
+      "\$%!@#^&*()-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  Random _rnd = Random();
   final url = "https://taxizillabg.com";
   final key = Key.fromUtf8("QfTjWnZq4t7w!z%C*F-JaNdRgUkXp2s5");
   final iv = IV.fromLength(16);
@@ -19,6 +22,13 @@ class userFunctions {
     final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
     final encrypted = encrypter.encrypt(creditinals, iv: iv);
     return encrypted.base64;
+  }
+
+  //Funkciq za dekriptirane na credentiali
+  String decryptCredentials(String creditinals) {
+    final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
+    final decrypted = encrypter.decrypt64(creditinals, iv: iv);
+    return decrypted;
   }
 
   //Funkciq za otkazvane na poruchka sled priemane
@@ -136,10 +146,6 @@ class userFunctions {
     orderIDFile.writeAsString(orderID);
   }
 
-  final _chars =
-      "\$%!@#^&*()-ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  Random _rnd = Random();
-
   //Funkciq za generirane na random string po zadadena duljina
   String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
       length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
@@ -162,13 +168,6 @@ class userFunctions {
   //Funkciq za otkazvane na poruchka
   void rejectOrder() async {
     await Session().post("$url/order/rejectOrder", {});
-  }
-
-  //Funkciq za dekriptirane na credentiali
-  String decryptCredentials(String creditinals) {
-    final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
-    final decrypted = encrypter.decrypt64(creditinals, iv: iv);
-    return decrypted;
   }
 
   //Funkciq za login na taksimetrovi shofyori

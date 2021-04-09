@@ -7,7 +7,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'main.dart';
 import 'dart:async';
 import 'package:audioplayers/audio_cache.dart';
-import 'userFunctions.dart';
+import 'userOperations.dart';
 import 'loggedInPage.dart';
 import 'orderConfirmed.dart';
 
@@ -67,9 +67,8 @@ class newOrderState extends State<newOrderPage> {
     ]);
     startPlayerAndPushNotification();
     Timer.periodic(Duration(seconds: 1), (timer) async {
-      print(a);
       if (a == 0) {
-        userFunctions().rejectOrder();
+        userOperations().rejectOrder();
         timer.cancel();
         stopPlayer();
         isOrderDelivered = false;
@@ -144,7 +143,7 @@ class newOrderState extends State<newOrderPage> {
                                             Color.fromRGBO(14, 204, 14, 1))),
                                     onPressed: () {
                                       status = "BUSY";
-                                      userFunctions().acceptOrder();
+                                      userOperations().acceptOrder();
                                       a = -1;
                                       isOrderDelivered = false;
                                       if (order["address"] == "" ||
@@ -179,7 +178,7 @@ class newOrderState extends State<newOrderPage> {
                                                 width: 5, color: Colors.black)),
                                         primary: Colors.red),
                                     onPressed: () {
-                                      userFunctions().rejectOrder();
+                                      userOperations().rejectOrder();
                                       a = -1;
                                       isOrderDelivered = false;
                                       runApp(loggedInPage());

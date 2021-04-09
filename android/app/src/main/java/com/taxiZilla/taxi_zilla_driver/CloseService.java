@@ -1,9 +1,18 @@
 package com.taxiZilla.taxi_zilla_driver;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.StrictMode;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.commons.net.ntp.TimeInfo;
@@ -24,9 +33,32 @@ public class CloseService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void startMyOwnForeground(){
+        String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+        String channelName = "My Background Service";
+        NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+        chan.setLightColor(Color.BLUE);
+        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
+        manager.createNotificationChannel(chan);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(R.drawable.notification)
+                .setContentTitle("taxiZilla работи на фонов режим!")
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
+        startForeground(2, notification);
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if(Build.VERSION.SDK_INT >25){
+            startMyOwnForeground();
+        }
         return START_STICKY;
     }
 
@@ -105,6 +137,9 @@ public class CloseService extends Service {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if(Build.VERSION.SDK_INT >25) {
+            stopForeground(true);
         }
         stopSelf();
     }

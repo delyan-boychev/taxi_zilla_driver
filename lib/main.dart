@@ -6,7 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:location/location.dart';
 import 'package:path_provider/path_provider.dart';
 import 'newOrderPage.dart';
-import 'userFunctions.dart';
+import 'userOperations.dart';
 import 'logInPage.dart';
 import 'dart:io';
 import 'loggedInPage.dart';
@@ -79,25 +79,25 @@ void checkForOrdersAndSetLocation() async {
     locationReqeustSended = false;
   } else {
     locData = await location.getLocation();
-    o = await userFunctions().checkForOrders(locData.longitude.toString(),
+    o = await userOperations().checkForOrders(locData.longitude.toString(),
         locData.latitude.toString(), status.toString());
     if (!isOrderDelivered) {
       if (o != null) {
         if (o.contains("address") && o.contains("x")) {
           if (status == "BUSY") {
-            userFunctions().rejectOrder();
+            userOperations().rejectOrder();
           } else {
             isOrderDelivered = true;
             order = jsonDecode(o);
             status = "BUSY";
-            userFunctions().checkForOrders(locData.longitude.toString(),
+            userOperations().checkForOrders(locData.longitude.toString(),
                 locData.latitude.toString(), status.toString());
             if (order["address"] != "")
               address = order["address"];
             else
-              address = await userFunctions().getAdresssByCoords(
+              address = await userOperations().getAdresssByCoords(
                   order["x"].toString(), order["y"].toString());
-            citySupported = await userFunctions().checkCityIsSupported();
+            citySupported = await userOperations().checkCityIsSupported();
             if (citySupported) {
               if (order["items"] == "" || order["items"] == null) {
                 orderText =
@@ -125,10 +125,10 @@ void main() async {
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   final dir = await getExternalStorageDirectory();
   if (await File(dir.path + "/credentials").exists()) {
-    final isLoggedIn = await userFunctions()
+    final isLoggedIn = await userOperations()
         .logInTaxiDriver(await File(dir.path + "/credentials").readAsString());
     if (isLoggedIn) {
-      name = await userFunctions().getNameTaxiDriver();
+      name = await userOperations().getNameTaxiDriver();
       runApp(loggedInPage());
       loggedIn = true;
     } else {

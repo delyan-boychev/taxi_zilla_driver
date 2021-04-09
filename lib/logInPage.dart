@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'main.dart';
-import 'userFunctions.dart';
+import 'userOperations.dart';
 import 'loggedInPage.dart';
 
 //Stranica za login na shofyor
@@ -170,7 +170,7 @@ class loginFormState extends State<loginForm> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState.validate()) {
-                            userFunctions()
+                            userOperations()
                                 .logInTaxiDriverFirstTime(emailController.text,
                                     passwordController.text)
                                 .then((isLoggedIn) {
@@ -179,8 +179,9 @@ class loginFormState extends State<loginForm> {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text(
                                         "Успешно влязохте в профила си! Моля изчакайте...")));
-                                userFunctions().getNameTaxiDriver().then((nm) =>
-                                    {name = nm, runApp(loggedInPage())});
+                                userOperations().getNameTaxiDriver().then(
+                                    (nm) =>
+                                        {name = nm, runApp(loggedInPage())});
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text(

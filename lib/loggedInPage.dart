@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:taxi_zilla_driver/logInPage.dart';
 import 'main.dart';
-import 'userFunctions.dart';
+import 'userOperations.dart';
 
 //Stranica kogato shofyoryt e vlqzul
 // ignore: camel_case_types
@@ -75,7 +75,7 @@ class loggedInState extends State<loggedInPage> with WidgetsBindingObserver {
             actions: <Widget>[
               GestureDetector(
                   onTap: () {
-                    userFunctions().exitProfile();
+                    userOperations().exitProfile();
                     runApp(loginPage());
                   },
                   child: Icon(

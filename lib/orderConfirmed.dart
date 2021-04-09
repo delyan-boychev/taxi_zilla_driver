@@ -4,7 +4,7 @@ import 'package:map_launcher/map_launcher.dart';
 import 'package:taxi_zilla_driver/loggedInPage.dart';
 import 'package:taxi_zilla_driver/maps_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'userFunctions.dart';
+import 'userOperations.dart';
 import 'main.dart';
 
 //Stranuca za prieta poruchka
@@ -136,7 +136,7 @@ class orderConfirmedState extends State<orderConfirmedPage> {
                                           Color.fromRGBO(14, 204, 14, 1))),
                                   onPressed: () {
                                     status = "ONLINE";
-                                    userFunctions().finishOrder();
+                                    userOperations().finishOrder();
                                     runApp(loggedInPage());
                                   },
                                   child: Text('Приключи поръчка',
@@ -164,7 +164,7 @@ class orderConfirmedState extends State<orderConfirmedPage> {
                                       primary: Colors.red),
                                   onPressed: () {
                                     status = "BUSY";
-                                    userFunctions().rejectOrderAfterAccept();
+                                    userOperations().rejectOrderAfterAccept();
                                     runApp(loggedInPage());
                                   },
                                   child: Text('Откажи поръчка',
