@@ -35,8 +35,8 @@ public class CloseService extends Service {
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startMyOwnForeground(){
-        String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
-        String channelName = "My Background Service";
+        String NOTIFICATION_CHANNEL_ID = "com.taxiZilla.taxi_zilla_driver";
+        String channelName = "taxiZilla Background service";
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
         chan.setLightColor(Color.BLUE);
         chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
